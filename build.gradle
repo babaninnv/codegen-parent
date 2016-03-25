@@ -2,20 +2,35 @@ apply plugin: 'application'
 apply plugin: 'groovy'
 apply plugin: 'java'
 
-repositories {
-	mavenCentral()
-}
+mainClassName = 'ru.babaninnv.codegen.Main'
+
+repositories { mavenCentral() }
 
 dependencies {
 
-    compile 'org.springframework:spring-core:4.2.5.RELEASE'
-    compile 'org.springframework:spring-context:4.2.5.RELEASE'
-    compile 'org.springframework:spring-test:4.2.5.RELEASE'
-    compile 'org.springframework:spring-beans:4.2.5.RELEASE'
+  compile 'org.slf4j:slf4j-api:1.7.19'
+  compile 'ch.qos.logback:logback-classic:1.1.6'
+  compile 'ch.qos.logback:logback-core:1.1.6'
+    
+  compile 'jline:jline:2.14.1'
 
+  compile 'org.apache.ivy:ivy:2.4.0'
+    
+  compile 'org.springframework:spring-core:4.2.5.RELEASE'
+  compile 'org.springframework:spring-context:4.2.5.RELEASE'
+  compile 'org.springframework:spring-test:4.2.5.RELEASE'
+  compile 'org.springframework:spring-beans:4.2.5.RELEASE'
 
-	compile 'org.codehaus.groovy:groovy-all:2.4.6'
-	compile 'com.squareup:javapoet:1.6.1'
-	compile 'com.beust:jcommander:1.48'
+  compile 'org.osgi:org.osgi.core:6.0.0'
+  compile 'org.osgi:org.osgi.annotation:6.0.0'
 
+  
+  compile 'org.apache.felix:org.osgi.core:1.4.0'
+  compile 'org.apache.felix:org.apache.felix.framework:5.4.0'
+  
+  compile 'org.codehaus.groovy:groovy-all:2.4.6'
+  compile 'com.squareup:javapoet:1.6.1'
+  compile 'com.beust:jcommander:1.48'
+  
+  testCompile 'org.testng:testng:6.9.10'
 }

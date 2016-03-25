@@ -11,6 +11,7 @@ public class Main {
 		applicationContext.register(ApplicationContextConfiguration.class);
 		applicationContext.refresh();
 		Console console = applicationContext.getBean(Console.class);
+		console.init();
 		console.run();
 		
 		applicationContext.destroy();
