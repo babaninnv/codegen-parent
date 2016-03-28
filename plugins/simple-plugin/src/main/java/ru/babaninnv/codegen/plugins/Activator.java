@@ -1,5 +1,7 @@
 package ru.babaninnv.codegen.plugins;
 
+import java.util.Hashtable;
+
 import org.apache.felix.shell.Command;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -10,9 +12,13 @@ public class Activator implements BundleActivator {
 
   @Override
   public void start(BundleContext context) throws Exception {
-    context.registerService(CodegenService.class.getName(), new CodegenServiceImpl(), null);
-    context.registerService(Command.class.getName(), new ExampleCommand(), null);
-    context.registerService(Command.class.getName(), new CodegenTemplatorCommand(), null);
+    
+    final Hashtable<String, Object> props = new Hashtable<>();
+    
+    props.put("osgi.command.scope", "codegen");
+    props.put("osgi.command.function", new String[] { "help" });
+    context.registerService(CodegenTemplatorCommand.class.getName(), new CodegenTemplatorCommand(), props);
+
   }
 
   @Override
