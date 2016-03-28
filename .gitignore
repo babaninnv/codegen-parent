@@ -1,0 +1,12 @@
+**/build/
+**/bin/
+**/bundles/
+
+/.gradle
+/.settings
+
+**/felix-cache/
+.gradle
+.settings
+.classpath
+.project

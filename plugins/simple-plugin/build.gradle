@@ -1,0 +1,52 @@
+apply plugin: 'java'
+
+repositories { mavenCentral() }
+
+dependencies {
+
+  compile project(":codegen")
+  
+  compile 'org.slf4j:slf4j-api:1.7.19'
+  compile 'ch.qos.logback:logback-classic:1.1.6'
+  compile 'ch.qos.logback:logback-core:1.1.6'
+    
+  compile 'jline:jline:2.14.1'
+
+  compile 'org.apache.ivy:ivy:2.4.0'
+    
+  compile 'org.springframework:spring-core:4.2.5.RELEASE'
+  compile 'org.springframework:spring-context:4.2.5.RELEASE'
+  compile 'org.springframework:spring-test:4.2.5.RELEASE'
+  compile 'org.springframework:spring-beans:4.2.5.RELEASE'
+
+  compile 'org.osgi:org.osgi.core:6.0.0'
+  compile 'org.osgi:org.osgi.annotation:6.0.0'
+  
+  compile 'org.apache.felix:org.osgi.core:1.4.0'
+  compile 'org.apache.felix:org.apache.felix.framework:5.4.0'
+  compile 'org.apache.felix:org.apache.felix.scr.annotations:1.9.12'
+  
+  compile 'org.codehaus.groovy:groovy-all:2.4.6'
+  compile 'com.squareup:javapoet:1.6.1'
+  compile 'com.beust:jcommander:1.48'
+  
+  compile 'org.apache.felix:org.apache.felix.shell:1.4.3'
+  compile 'org.apache.felix:org.apache.felix.gogo.runtime:0.16.2'
+  
+  testCompile 'org.testng:testng:6.9.10'
+}
+
+jar {
+  manifest {
+    attributes("Manifest-Version": "1.0",
+               "Bundle-Activator": "ru.babaninnv.codegen.plugins.Activator",
+               "Bundle-ManifestVersion": "2",
+               "Bundle-Name": "simple-plugin",
+               "Bundle-ClassPath": ".",
+               "Bundle-SymbolicName": "codegen-parent.plugins.simple-plugin",
+               "Bundle-Version": "1.0.0",
+               "Created-By": "1.8.0_60 (Oracle Corporation)",
+               "Export-Package": "ru.babaninnv.codegen.plugins.service",
+               "Import-Package": "org.osgi.framework,org.apache.felix.shell,ru.babaninnv.codegen.plugins.service")
+  }
+}
