@@ -1,2 +1,4 @@
 include ":codegen"
 include ":plugins:simple-plugin"
+include 'templates'
+

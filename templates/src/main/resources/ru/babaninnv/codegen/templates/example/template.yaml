@@ -1,0 +1,5 @@
+name: ExampleGroovyTemplate
+modules:
+  - sql
+classes:
+  - ExampleGroovyTemplate
