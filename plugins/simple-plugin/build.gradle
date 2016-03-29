@@ -50,3 +50,9 @@ jar {
                "Import-Package": "org.osgi.framework,org.apache.felix.shell,ru.babaninnv.codegen.plugins.service")
   }
 }
+
+
+task copyJar(type: Copy, dependsOn: jar) {
+  from new File(project.buildDir, "libs${File.separator}${project.name}.jar")
+  into new File(project(":codegen").projectDir, "bundles")
+}
