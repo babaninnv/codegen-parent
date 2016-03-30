@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import groovy.lang.GroovyClassLoader;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.main.AutoProcessor;
@@ -23,6 +24,7 @@ import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 import org.yaml.snakeyaml.Yaml;
+
 import ru.babaninnv.codegen.utils.PropertyConstants;
 
 public class Main {
@@ -83,8 +85,7 @@ public class Main {
       }
 
       FrameworkEvent event = null;
-      do
-      {
+      do {
         m_fwk.start();
         event = m_fwk.waitForStop(0);
       }

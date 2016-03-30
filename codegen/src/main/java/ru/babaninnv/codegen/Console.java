@@ -1,23 +1,10 @@
 package ru.babaninnv.codegen;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.felix.framework.Felix;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.launch.Framework;
-import org.osgi.framework.launch.FrameworkFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import ru.babaninnv.codegen.api.CodegenTemplate;
 
 @Component
 public class Console {

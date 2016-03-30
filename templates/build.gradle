@@ -17,3 +17,13 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
+
+build {
+
+    def sep = File.separator;
+
+    copy {
+        from "src/main/groovy", "src/main/java", "src/main/resources"
+        into "${project.buildDir.absolutePath}${sep}result-templates"
+    }
+}

@@ -1,0 +1,26 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories { mavenCentral() }
+
+dependencies {
+
+    compile 'org.slf4j:slf4j-api:1.7.19'
+    compile 'ch.qos.logback:logback-classic:1.1.6'
+    compile 'ch.qos.logback:logback-core:1.1.6'
+
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'commons-io:commons-io:2.4'
+
+    compile 'org.osgi:org.osgi.core:6.0.0'
+    compile 'org.osgi:org.osgi.annotation:6.0.0'
+
+    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+
+    compile 'org.yaml:snakeyaml:1.17'
+
+    testCompile "org.testng:testng:6.9.10"
+    testCompile "org.assertj:assertj-core:3.3.0"
+}

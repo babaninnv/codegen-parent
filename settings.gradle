@@ -1,4 +1,7 @@
 include ":codegen"
+include ':templates'
+include ":plugins"
 include ":plugins:simple-plugin"
-include 'templates'
+include ":plugins:codegen-templator-plugin"
+
 
