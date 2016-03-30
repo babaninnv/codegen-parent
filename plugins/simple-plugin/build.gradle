@@ -40,14 +40,14 @@ jar {
   manifest {
     attributes("Manifest-Version": "1.0",
                "Bundle-Activator": "ru.babaninnv.codegen.plugins.Activator",
-               "Bundle-ManifestVersion": "2",
+               "Bundle-ManifestVersion": "6",
                "Bundle-Name": "simple-plugin",
                "Bundle-ClassPath": ".",
                "Bundle-SymbolicName": "codegen-parent.plugins.simple-plugin",
                "Bundle-Version": "1.0.0",
                "Created-By": "1.8.0_60 (Oracle Corporation)",
                "Export-Package": "ru.babaninnv.codegen.plugins.service",
-               "Import-Package": "org.osgi.framework,org.apache.felix.shell,ru.babaninnv.codegen.plugins.service")
+               "Import-Package": "ru.babaninnv.codegen.plugins.service")
   }
 }
 

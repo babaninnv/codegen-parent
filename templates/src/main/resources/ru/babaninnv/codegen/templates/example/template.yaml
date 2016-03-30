@@ -1,5 +1,5 @@
 name: ExampleGroovyTemplate
 modules:
   - sql
-classPaths:
-  - ExampleGroovyTemplate
+classes:
+  - ExampleGroovyTemplate.groovy

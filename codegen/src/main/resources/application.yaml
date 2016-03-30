@@ -1,10 +1,10 @@
 framework_systempackages_extra: 
   - ru.babaninnv.codegen.plugins.service
-  - org.apache.felix.shell
+  - org.apache.felix.gogo.runtime
   - org.apache.felix.gogo.command
+  - ru.babaninnv.codegen.plugin.templator.commands
 bundles_folder: c:/Users/BabaninN/IdeaProjects/codegen-parent/codegen/bundles
 bundles: 
   - org.apache.felix.gogo.runtime-0.16.2.jar
   - org.apache.felix.gogo.shell-0.12.0.jar
-  - simple-plugin.jar
-  
+  - codegen-templator-plugin.jar
