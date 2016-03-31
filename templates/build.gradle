@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
 
-    compile project(":codegen")
+    compile project(":plugins:codegen-templator-plugin")
 
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
@@ -21,6 +21,8 @@ dependencies {
 build {
 
     def sep = File.separator;
+
+    delete "${project.buildDir.absolutePath}${sep}result-templates"
 
     copy {
         from "src/main/groovy", "src/main/java", "src/main/resources"

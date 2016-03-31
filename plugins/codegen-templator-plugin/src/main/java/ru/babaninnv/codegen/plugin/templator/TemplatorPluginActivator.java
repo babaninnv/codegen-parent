@@ -1,5 +1,6 @@
 package ru.babaninnv.codegen.plugin.templator;
 
+import ch.qos.logback.classic.spi.Configurator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -9,6 +10,7 @@ import ru.babaninnv.codegen.plugin.templator.commands.TemplateCommand;
 import ru.babaninnv.codegen.plugin.templator.commands.TemplateCommandImpl;
 import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrar;
 import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrarImpl;
+import ru.babaninnv.codegen.plugin.templator.utils.PluginConfiguration;
 
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -24,6 +26,8 @@ public class TemplatorPluginActivator implements BundleActivator {
 
   public void start(BundleContext context) throws Exception {
     this.bundleContext = context;
+
+    PluginConfiguration.load();
 
     Map<String, String> config = new HashMap<>();
 

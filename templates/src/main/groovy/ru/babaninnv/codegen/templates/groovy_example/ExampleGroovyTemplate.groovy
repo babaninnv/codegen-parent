@@ -1,7 +1,7 @@
-package ru.babaninnv.codegen.templates.example
+package ru.babaninnv.codegen.templates.groovy_example
 
-import ru.babaninnv.codegen.templates.Model
-import ru.babaninnv.codegen.templates.Template
+import ru.babaninnv.codegen.plugin.templator.templates.Model
+import ru.babaninnv.codegen.plugin.templator.templates.Template
 
 /**
  * Created by BabaninN on 29.03.2016.

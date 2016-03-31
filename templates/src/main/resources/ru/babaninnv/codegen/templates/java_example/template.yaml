@@ -1,0 +1,5 @@
+name: ExampleJavaTemplate
+modules:
+  - sql
+classes:
+  - ExampleJavaTemplate.java
