@@ -1,14 +1,14 @@
 package ru.babaninnv.codegen.plugin.templator.services;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import ru.babaninnv.codegen.plugin.templator.objects.TemplateDefinition;
 
-import ru.babaninnv.codegen.plugin.templator.objects.Template;
+import java.util.List;
 
 /**
  * Created by NikitaRed on 30.03.2016.
  */
 public interface TemplateRegistrar {
-  List<Template> load() throws IOException;
+  TemplateDefinition getByName(String name);
+  void addTemplateDefinition(TemplateDefinition template);
+  List<TemplateDefinition> getTemplates();
 }

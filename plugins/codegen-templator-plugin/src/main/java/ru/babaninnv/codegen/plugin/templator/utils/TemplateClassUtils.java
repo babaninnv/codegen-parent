@@ -8,11 +8,19 @@ import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.type.filter.AssignableTypeFilter;
+import ru.babaninnv.codegen.plugin.templator.objects.TemplateDefinition;
+import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrar;
+import ru.babaninnv.codegen.plugin.templator.templates.Template;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Set;
 
 /**
  * Created by BabaninN on 31.03.2016.
@@ -21,6 +29,9 @@ public class TemplateClassUtils {
 
   @Autowired
   private PluginConfiguration pluginConfiguration;
+
+  @Autowired
+  private TemplateRegistrar templateRegistrar;
 
   private static final Logger LOG = LoggerFactory.getLogger(TemplateClassUtils.class);
 
@@ -75,6 +86,26 @@ public class TemplateClassUtils {
 
     CompilationProgress progress = null;
     BatchCompiler.compile(commandLine, new PrintWriter(System.out), new PrintWriter(System.err), progress);
+
+    reload();
+
+    TemplateClassLoader classLoader = pluginConfiguration.getCurrentTemplateClassLoader();
+
+    ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
+    scanner.setResourceLoader(new DefaultResourceLoader(pluginConfiguration.getCurrentTemplateClassLoader()));
+    scanner.addIncludeFilter(new AssignableTypeFilter(Template.class));
+    Set<BeanDefinition> beanDefinitions = scanner.findCandidateComponents("ru");
+
+    for (BeanDefinition beanDefinition : beanDefinitions) {
+      try {
+        Template template = (Template) classLoader.loadClass(beanDefinition.getBeanClassName()).newInstance();
+        TemplateDefinition templateDefinition = new TemplateDefinition(template);
+        templateRegistrar.addTemplateDefinition(templateDefinition);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+    }
   }
 
   private class WorkspaceSettings {

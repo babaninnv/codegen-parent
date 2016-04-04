@@ -6,22 +6,22 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrar;
 
-import static org.mockito.Mockito.mock;
+import static org.testng.Assert.*;
 
 /**
- * Created by BabaninN on 30.03.2016.
+ * Created by BabaninN on 04.04.2016.
  */
 @ContextConfiguration(classes = ru.babaninnv.codegen.plugin.templator.configurations.ContextConfiguration.class)
-public class ListCommandImplementationImplTest extends AbstractTestNGSpringContextTests {
+public class ReloadCommandImplementationImplTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
   private TemplateRegistrar templateRegistrar;
 
   @Autowired
-  private CommandImplementation listCommandImplementation;
+  private CommandImplementation reloadCommandImplementation;
 
   @Test
   public void testInvoke() throws Exception {
-    listCommandImplementation.invoke();
+    reloadCommandImplementation.invoke();
   }
 }

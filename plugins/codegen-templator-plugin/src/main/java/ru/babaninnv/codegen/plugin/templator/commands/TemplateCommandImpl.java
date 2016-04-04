@@ -1,5 +1,6 @@
 package ru.babaninnv.codegen.plugin.templator.commands;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.felix.service.command.Descriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,7 +44,8 @@ public class TemplateCommandImpl implements TemplateCommand {
 
   @Override
   @Descriptor("make")
-  public void make() {
+  public void make(String name) {
+    makeCommandImplementation.setup(ImmutableMap.of("name", name));
     makeCommandImplementation.invoke();
   }
 }

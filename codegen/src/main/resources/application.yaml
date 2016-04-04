@@ -1,8 +1,18 @@
 framework_systempackages_extra: 
-  - ru.babaninnv.codegen.plugins.service
   - org.apache.felix.gogo.runtime
   - org.apache.felix.gogo.command
+  - org.apache.commons.logging
+  - ru.babaninnv.codegen.plugins.service
   - ru.babaninnv.codegen.plugin.templator.commands
+  - ru.babaninnv.codegen.plugin.templator.configurations
+  # SPRING
+  - org.springframework.beans.factory.annotation
+  - org.springframework.beans.factory.config
+  - org.springframework.context
+  - org.springframework.context.annotation
+  - org.springframework.core.io
+  - org.springframework.core.type.filter
+  - org.springframework.stereotype
 bundles_folder: c:/Users/BabaninN/IdeaProjects/codegen-parent/codegen/bundles
 bundles: 
   - org.apache.felix.gogo.runtime-0.16.2.jar

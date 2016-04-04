@@ -5,6 +5,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.testng.annotations.Test;
 
+import ru.babaninnv.codegen.plugin.templator.commands.TemplateCommand;
 import ru.babaninnv.codegen.plugin.templator.commands.TemplateCommandImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,8 +25,8 @@ public class TemplatorPluginActivatorTest {
     TemplatorPluginActivator templatorPluginActivator = new TemplatorPluginActivator();
     templatorPluginActivator.start(bundleContext);
 
-    ServiceReference<TemplateCommandImpl> serviceReference = bundleContext.getServiceReference(TemplateCommandImpl.class);
-    TemplateCommandImpl templateCommand = bundleContext.getService(serviceReference);
+    ServiceReference<TemplateCommand> serviceReference = bundleContext.getServiceReference(TemplateCommand.class);
+    TemplateCommand templateCommand = bundleContext.getService(serviceReference);
 
     assertThat(templateCommand).isNotNull();
   }

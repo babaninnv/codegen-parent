@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-import ru.babaninnv.codegen.plugin.templator.objects.Template;
+import ru.babaninnv.codegen.plugin.templator.objects.TemplateDefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,7 +27,7 @@ public class TemplateRegistrarTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testLoad() throws Exception {
 
-    List<Template> templates = templateRegistrar.load();
+    List<TemplateDefinition> templates = templateRegistrar.getTemplates();
 
     LOG.info("#testLoad> templates.size(): {}", templates.size());
 

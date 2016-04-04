@@ -1,9 +1,11 @@
 package ru.babaninnv.codegen.plugin.templator;
 
 import ch.qos.logback.classic.spi.Configurator;
+import org.apache.aries.blueprint.container.BlueprintContainerImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -36,12 +38,12 @@ public class TemplatorPluginActivator implements BundleActivator {
 
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
 
-    TemplateRegistrar templateRegistrar = applicationContext.getBean(TemplateRegistrar.class);
+    TemplateCommand templateCommand = applicationContext.getBean(TemplateCommand.class);
 
     Dictionary<String, Object> props = new Hashtable<>();
     props.put("osgi.command.scope", "templator");
-    props.put("osgi.command.function", new String[]{"list"});
-    bundleContext.registerService(TemplateCommandImpl.class, new TemplateCommandImpl(templateRegistrar), props);
+    props.put("osgi.command.function", new String[]{"list", "reload", "make"});
+    bundleContext.registerService(TemplateCommand.class, templateCommand, props);
 
     props = new Hashtable<>();
     props.put("osgi.command.scope", "*");

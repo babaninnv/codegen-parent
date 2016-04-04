@@ -1,2 +1,2 @@
-templates_sources_folder: "templates/build/result-templates"
+templates_sources_folder: "templates/src/main/java"
 templates_classes_folder: "templates/build/result-templates-classes"

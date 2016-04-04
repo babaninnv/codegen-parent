@@ -21,10 +21,7 @@ dependencies {
 
     compile 'org.apache.ivy:ivy:2.4.0'
 
-    compile 'org.springframework:spring-core:4.2.5.RELEASE'
     compile 'org.springframework:spring-context:4.2.5.RELEASE'
-    compile 'org.springframework:spring-test:4.2.5.RELEASE'
-    compile 'org.springframework:spring-beans:4.2.5.RELEASE'
 
     compile 'org.osgi:org.osgi.core:6.0.0'
     compile 'org.osgi:org.osgi.annotation:6.0.0'
@@ -42,6 +39,7 @@ dependencies {
 
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'org.apache.commons:commons-collections4:4.1'
 
     bundle 'org.apache.felix:org.apache.felix.gogo.runtime:0.16.2'
     bundle 'org.apache.felix:org.apache.felix.gogo.shell:0.12.0'
@@ -50,16 +48,19 @@ dependencies {
 
     compile 'org.yaml:snakeyaml:1.17'
 
+    compile 'com.google.guava:guava:19.0'
+
     compile 'org.antlr:antlr4:4.5.2-1'
     compile 'org.antlr:antlr4-runtime:4.5.2-1'
 
     testCompile 'org.testng:testng:6.9.10'
+    testCompile 'org.springframework:spring-test:4.2.5.RELEASE'
 
     compile configurations.bundle
 }
 
 build {
-    delete "bundles"
+    //delete "bundles"
 
     copy {
         from configurations.bundle

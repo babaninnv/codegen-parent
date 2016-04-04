@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
+import ru.babaninnv.codegen.plugin.templator.objects.TemplateDefinition;
+import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrar;
 import ru.babaninnv.codegen.plugin.templator.templates.Template;
 
 import java.io.StringWriter;
@@ -26,6 +28,9 @@ public class TemplateClassUtilsTest extends AbstractTestNGSpringContextTests {
   @Autowired
   private PluginConfiguration pluginConfiguration;
 
+  @Autowired
+  private TemplateRegistrar templateRegistrar;
+
   @Test
   public void testReload() throws Exception {
 
@@ -41,9 +46,11 @@ public class TemplateClassUtilsTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testCompile() throws Exception {
     pluginConfiguration.load();
-
     templateClassUtils.compile();
-    templateClassUtils.reload();
+
+    TemplateDefinition exampleJavaTemplate = templateRegistrar.getByName("ExampleJavaTemplate");
+
+    assertThat(exampleJavaTemplate).isNotNull();
 
     TemplateClassLoader classLoader = pluginConfiguration.getCurrentTemplateClassLoader();
     Class<?> templateClass = classLoader.loadClass("ru.babaninnv.codegen.templates.java_example.ExampleJavaTemplate");
@@ -52,6 +59,8 @@ public class TemplateClassUtilsTest extends AbstractTestNGSpringContextTests {
     StringWriter writer = new StringWriter();
     template.setup(writer, null);
     template.render();
+
+
 
     LOG.info("result: " + writer.toString());
 
