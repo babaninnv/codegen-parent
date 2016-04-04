@@ -23,7 +23,7 @@ public class PluginConfiguration {
     Yaml yaml = new Yaml();
     properties = (Map<String, Object>) yaml.load(PluginConfiguration.class.getClassLoader().getResourceAsStream(Constants.PLUGIN_PROPERTIES_FILE));
     properties.put("java.class.path", System.getProperty("java.class.path"));
-    properties.put("app.home", new File("../..").getAbsolutePath());
+    properties.put("app.home", new File("").getAbsolutePath());
     LOG.debug("#load> Set app.home property: {}", properties.get("app.home"));
   }
 
@@ -31,7 +31,7 @@ public class PluginConfiguration {
     this.properties = new HashMap<>();
     this.properties.putAll(properties);
     this.properties.put("java.class.path", System.getProperty("java.class.path"));
-    this.properties.put("app.home", new File("../..").getAbsolutePath());
+    this.properties.put("app.home", new File("").getAbsolutePath());
     LOG.debug("#load> Set app.home property: {}", this.properties.get("app.home"));
   }
 

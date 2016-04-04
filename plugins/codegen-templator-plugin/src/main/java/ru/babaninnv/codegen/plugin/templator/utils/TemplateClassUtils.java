@@ -70,7 +70,7 @@ public class TemplateClassUtils {
 
     String javaVersionArg = "-1.8";
     String encodingArg = "-encoding UTF-8";
-    String classpathArg = String.format("-cp \"%s\"", workspaceSettings.inheritedClasspath);
+    String classpathArg = String.format("-cp \"%s\"", workspaceSettings.inheritedClasspath + ";" + new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile()).toString());
     String sourcepathArg = String.format("\"%s\"", sourceFolder.getAbsolutePath());
     String outputFolderArg = String.format("-d \"%s\"", outputFolder.getAbsolutePath());
     String additionalArgs = "-time -verbose";

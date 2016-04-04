@@ -1,4 +1,5 @@
-framework_systempackages_extra: 
+framework_systempackages_extra:
+  - javax.annotation.processing
   - org.apache.felix.gogo.runtime
   - org.apache.felix.gogo.command
   - org.apache.commons.logging
@@ -18,7 +19,13 @@ framework_systempackages_extra:
   # YAML
   - org.yaml
   - org.yaml.snakeyaml
-bundles_folder: c:/Users/BabaninN/IdeaProjects/codegen-parent/codegen/bundles
+  # APACHE COMMONS
+  - org.apache.commons.io
+  - org.apache.commons.lang3
+  - org.apache.commons.lang3.builder
+  # GOOGLE
+  - com.google.common.collect
+bundles_folder: c:/Users/NikitaRed/IdeaProjects/codegen-parent/codegen/bundles
 bundles: 
   - org.apache.felix.gogo.runtime-0.16.2.jar
   - org.apache.felix.gogo.shell-0.12.0.jar

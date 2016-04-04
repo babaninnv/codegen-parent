@@ -62,38 +62,22 @@ dependencies {
     testCompile "org.assertj:assertj-core:3.3.0"
 }
 
-/*
-jar {
-    manifest {
-        attributes("Manifest-Version": "1.0",
-                "Bundle-Activator": "ru.babaninnv.codegen.plugin.templator.TemplatorPluginActivator",
-                "Bundle-ManifestVersion": "2",
-                "Bundle-Name": "${project.name}",
-                "Bundle-ClassPath": ".",
-                "Bundle-SymbolicName": "codegen-parent.plugins.${project.name}",
-                "Bundle-Version": "1.0.0",
-                "Created-By": "1.8.0_60 (Oracle Corporation)",
-                "Export-Package": "ru.babaninnv.codegen.plugin.templator," +
-                                  "ru.babaninnv.codegen.plugin.templator.commands," +
-                                  "ru.babaninnv.codegen.plugin.templator.configurations",
-                "Import-Package": "org.osgi.framework," +
-                                  "org.springframework.context," +
-                                  "org.springframework.context.annotation," +
-                                  "org.springframework.context.support," +
-                                  "org.springframework.util," +
-                                  "org.springframework.beans.factory.support")
-    }
-}
-*/
-
 jar {
     manifest {
         attributes 'Implementation-Title': 'Bundle Quickstart',     // Will be added to manifest
-                   'Import-Package': '*'  // Will be overwritten by the insturctions below
+                   'Import-Package': '*',  // Will be overwritten by the insturctions below
+                   "Class-Path": 'WEB-INF/classes'
     }
 }
 
 bundle {
+
+    exclude module: 'slf4j-api'
+    exclude module: 'snakeyaml'
+    exclude module: 'commons-io'
+    exclude module: 'guava'
+    exclude module: 'commons-lang3'
+
     instructions << [
             'Bundle-Activator': 'ru.babaninnv.codegen.plugin.templator.TemplatorPluginActivator',
             'Import-Package': 'org.osgi.framework,' +
@@ -101,11 +85,17 @@ bundle {
                               'org.xml.sax,' +
                               'org.springframework.*,' +
                               'org.slf4j.*,' +
-                              'org.yaml.*',
+                              'org.yaml.*,' +
+                              'org.apache.commons.io.*,' +
+                              'com.google.common.collect.*,' +
+                              'org.apache.commons.lang3.*,' +
+                              'javax.annotation.processing.*,' +
+                              'javax.tools.*,' +
+                              'javax.lang.model.*',
             '-sources': false
     ]
 
-    instruction 'Export-Package', 'ru.babaninnv.codegen.plugin.templator.*' // Specify an individual instruction
+    instruction 'Export-Package', 'ru.babaninnv.codegen.plugin.templator.*,org.eclipse.jdt.*'
     instruction '-wab', ''
 }
 
