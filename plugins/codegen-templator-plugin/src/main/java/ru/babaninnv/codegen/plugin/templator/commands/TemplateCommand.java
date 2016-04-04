@@ -5,4 +5,6 @@ package ru.babaninnv.codegen.plugin.templator.commands;
  */
 public interface TemplateCommand {
   void list();
+  void reload();
+  void make();
 }

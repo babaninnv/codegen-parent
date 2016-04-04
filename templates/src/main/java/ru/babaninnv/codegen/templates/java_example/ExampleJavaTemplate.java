@@ -23,7 +23,6 @@ public class ExampleJavaTemplate implements Template {
 
     @Override
     public void render() {
-
         try {
             w.write("package ru.babaninnv.codegen.templates.java_example;");
             w.write("class ExmapleTemplate { ");

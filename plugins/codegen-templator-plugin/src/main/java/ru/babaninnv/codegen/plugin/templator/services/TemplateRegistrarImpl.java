@@ -2,6 +2,8 @@ package ru.babaninnv.codegen.plugin.templator.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -17,29 +19,30 @@ import java.util.Map;
 
 import ru.babaninnv.codegen.plugin.templator.objects.Template;
 import ru.babaninnv.codegen.plugin.templator.utils.Constants;
+import ru.babaninnv.codegen.plugin.templator.utils.PluginConfiguration;
 import ru.babaninnv.codegen.plugin.templator.utils.TemplateYamlConstants;
 
 /**
  * Created by NikitaRed on 30.03.2016.
  */
+@Component
 public class TemplateRegistrarImpl implements TemplateRegistrar {
 
   private static final Logger LOG = LoggerFactory.getLogger(TemplateRegistrarImpl.class);
 
   private List<Template> templates;
-  private Map<String, String> configuration;
 
-  public TemplateRegistrarImpl(Map<String, String> configuration) {
-    this.configuration = configuration;
-  }
+  @Autowired
+  private PluginConfiguration configuration;
 
   @Override
   public List<Template> load() throws IOException {
 
     templates = new ArrayList<>();
 
-    String rootTemplateStoragePath = configuration.get(Constants.TEMPLATE_LOCATION);
+    String rootTemplateStoragePath = configuration.getString(Constants.TEMPLATES_SOURCES_FOLDER);
     String rootTemplateStorageAbsolutePath = new File(rootTemplateStoragePath).getAbsolutePath();
+
     LOG.debug("#load> root template storage path: {}", rootTemplateStorageAbsolutePath);
 
     Files.walkFileTree(new File(rootTemplateStorageAbsolutePath).toPath(), new SimpleFileVisitor<Path>() {

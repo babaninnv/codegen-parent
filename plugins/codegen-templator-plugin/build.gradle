@@ -26,6 +26,9 @@ dependencies {
 
     compile 'org.yaml:snakeyaml:1.17'
 
+    compile 'org.springframework:spring-context:4.2.5.RELEASE'
+
+    compile 'org.apache.felix:org.apache.felix.framework:5.4.0'
     compile 'org.apache.felix:org.apache.felix.utils:1.8.2'
     compile 'org.apache.felix:org.apache.felix.dependencymanager:4.3.0'
 
@@ -34,6 +37,8 @@ dependencies {
     compile 'org.apache.felix:org.apache.felix.gogo.command:0.16.0'
 
     testCompile "org.mockito:mockito-all:1.10.19"
+    testCompile "org.springframework:spring-test:4.2.5.RELEASE"
+    testCompile 'org.apache.sling:org.apache.sling.testing.osgi-mock:2.0.2'
     testCompile "org.testng:testng:6.9.10"
     testCompile "org.assertj:assertj-core:3.3.0"
 }

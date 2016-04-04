@@ -2,6 +2,7 @@ package ru.babaninnv.codegen.plugin.templator.services;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import ru.babaninnv.codegen.plugin.templator.objects.Template;
 

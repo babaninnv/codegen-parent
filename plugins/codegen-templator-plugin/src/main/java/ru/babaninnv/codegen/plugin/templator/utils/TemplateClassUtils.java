@@ -7,6 +7,7 @@ import org.eclipse.jdt.core.compiler.CompilationProgress;
 import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,9 @@ import java.net.URL;
  * Created by BabaninN on 31.03.2016.
  */
 public class TemplateClassUtils {
+
+  @Autowired
+  private PluginConfiguration pluginConfiguration;
 
   private static final Logger LOG = LoggerFactory.getLogger(TemplateClassUtils.class);
 
@@ -36,7 +40,7 @@ public class TemplateClassUtils {
       }
 
       TemplateClassLoader templateClassLoader = new TemplateClassLoader(new URL[]{templatesClassesFolder.toURI().toURL()}, this.getClass().getClassLoader());
-      PluginConfiguration.setCurrentTemplateClassLoader(templateClassLoader);
+      pluginConfiguration.setCurrentTemplateClassLoader(templateClassLoader);
 
     } catch (Exception e) {
       LOG.error("#reload> " + e.getMessage(), e);
@@ -74,9 +78,9 @@ public class TemplateClassUtils {
   }
 
   private class WorkspaceSettings {
-    String inheritedClasspath = PluginConfiguration.getString("java.class.path");
-    String applicationHome = PluginConfiguration.getString("app.home");
-    String templatesSourcesFolderPath = PluginConfiguration.getString(Constants.TEMPLATES_SOURCES_FOLDER);
-    String templatesClassesFolderPath = PluginConfiguration.getString(Constants.TEMPLATES_CLASSES_FOLDER);
+    String inheritedClasspath = pluginConfiguration.getString("java.class.path");
+    String applicationHome = pluginConfiguration.getString("app.home");
+    String templatesSourcesFolderPath = pluginConfiguration.getString(Constants.TEMPLATES_SOURCES_FOLDER);
+    String templatesClassesFolderPath = pluginConfiguration.getString(Constants.TEMPLATES_CLASSES_FOLDER);
   }
 }
