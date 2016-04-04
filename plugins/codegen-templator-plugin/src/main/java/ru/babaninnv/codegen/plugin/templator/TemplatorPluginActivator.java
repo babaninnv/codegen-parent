@@ -36,6 +36,7 @@ public class TemplatorPluginActivator implements BundleActivator {
   public void start(BundleContext context) throws Exception {
     this.bundleContext = context;
 
+    Class.forName("ru.babaninnv.codegen.plugin.templator.configurations.ContextConfiguration");
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ContextConfiguration.class);
 
     TemplateCommand templateCommand = applicationContext.getBean(TemplateCommand.class);

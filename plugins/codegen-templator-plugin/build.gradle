@@ -99,7 +99,9 @@ bundle {
             'Import-Package': 'org.osgi.framework,' +
                               'org.apache.commons.logging.*,' +
                               'org.xml.sax,' +
-                              'org.springframework.*',
+                              'org.springframework.*,' +
+                              'org.slf4j.*,' +
+                              'org.yaml.*',
             '-sources': false
     ]
 

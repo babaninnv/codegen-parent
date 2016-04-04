@@ -13,6 +13,11 @@ framework_systempackages_extra:
   - org.springframework.core.io
   - org.springframework.core.type.filter
   - org.springframework.stereotype
+  # LOGGER
+  - org.slf4j
+  # YAML
+  - org.yaml
+  - org.yaml.snakeyaml
 bundles_folder: c:/Users/BabaninN/IdeaProjects/codegen-parent/codegen/bundles
 bundles: 
   - org.apache.felix.gogo.runtime-0.16.2.jar

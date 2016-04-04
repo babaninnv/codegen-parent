@@ -27,6 +27,14 @@ public class PluginConfiguration {
     LOG.debug("#load> Set app.home property: {}", properties.get("app.home"));
   }
 
+  public void load(Map<String, Object> properties) {
+    this.properties = new HashMap<>();
+    this.properties.putAll(properties);
+    this.properties.put("java.class.path", System.getProperty("java.class.path"));
+    this.properties.put("app.home", new File("../..").getAbsolutePath());
+    LOG.debug("#load> Set app.home property: {}", this.properties.get("app.home"));
+  }
+
   public Object get(String name) {
     return properties.get(name);
   }
