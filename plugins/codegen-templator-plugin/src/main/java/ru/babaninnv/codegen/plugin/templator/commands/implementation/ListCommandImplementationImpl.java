@@ -30,6 +30,7 @@ public class ListCommandImplementationImpl implements CommandImplementation {
   @Override
   public void invoke() {
     try {
+      templateRegistrar.loadTemplatesConfiguration();
       templateClassUtils.compile();
 
       List<TemplateDefinition> templates = templateRegistrar.getTemplates();

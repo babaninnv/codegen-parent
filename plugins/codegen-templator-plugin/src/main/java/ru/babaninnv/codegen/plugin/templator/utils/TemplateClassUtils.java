@@ -8,10 +8,6 @@ import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.type.filter.AssignableTypeFilter;
 import ru.babaninnv.codegen.plugin.templator.objects.TemplateDefinition;
 import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrar;
 import ru.babaninnv.codegen.plugin.templator.templates.Template;
@@ -20,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by BabaninN on 31.03.2016.
@@ -68,12 +64,14 @@ public class TemplateClassUtils {
     if (outputFolder.exists()) FileUtils.forceDelete(outputFolder);
     FileUtils.forceMkdir(outputFolder);
 
+    String currentJarLocation = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile()).toString().replaceAll("c:", "C:");
+
     String javaVersionArg = "-1.8";
     String encodingArg = "-encoding UTF-8";
-    String classpathArg = String.format("-cp \"%s\"", workspaceSettings.inheritedClasspath + ";" + new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile()).toString());
+    String classpathArg = String.format("-cp \"%s\"", workspaceSettings.inheritedClasspath.concat(";").concat(currentJarLocation));
     String sourcepathArg = String.format("\"%s\"", sourceFolder.getAbsolutePath());
     String outputFolderArg = String.format("-d \"%s\"", outputFolder.getAbsolutePath());
-    String additionalArgs = "-time -verbose";
+    String additionalArgs = "-time";
 
     String commandLine = StringUtils.join(ImmutableList.of(javaVersionArg,
                                                            additionalArgs,
@@ -82,8 +80,6 @@ public class TemplateClassUtils {
                                                            outputFolderArg,
                                                            sourcepathArg), " ");
 
-    System.out.println("commandLine: " + commandLine);
-
     CompilationProgress progress = null;
     BatchCompiler.compile(commandLine, new PrintWriter(System.out), new PrintWriter(System.err), progress);
 
@@ -91,27 +87,26 @@ public class TemplateClassUtils {
 
     TemplateClassLoader classLoader = pluginConfiguration.getCurrentTemplateClassLoader();
 
-    ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
-    scanner.setResourceLoader(new DefaultResourceLoader(pluginConfiguration.getCurrentTemplateClassLoader()));
-    scanner.addIncludeFilter(new AssignableTypeFilter(Template.class));
-    Set<BeanDefinition> beanDefinitions = scanner.findCandidateComponents("ru");
-
-    for (BeanDefinition beanDefinition : beanDefinitions) {
+    List<TemplateDefinition> templateDefinitions = templateRegistrar.getTemplates();
+    for (TemplateDefinition templateDefinition : templateDefinitions) {
       try {
-        Template template = (Template) classLoader.loadClass(beanDefinition.getBeanClassName()).newInstance();
-        TemplateDefinition templateDefinition = new TemplateDefinition(template);
-        templateRegistrar.addTemplateDefinition(templateDefinition);
+        Class<?> clazz = classLoader.loadClass(templateDefinition.getClassName());
+        templateDefinition.setTemplate((Template) clazz.newInstance());
       } catch (Exception e) {
         e.printStackTrace();
       }
-
     }
+
+    // COPY RESOURCES
+    File resourcesFolder = new File(workspaceSettings.applicationHome, workspaceSettings.templatesResourcesFolderPath);
+    FileUtils.copyDirectory(resourcesFolder, outputFolder);
   }
 
   private class WorkspaceSettings {
     String inheritedClasspath = pluginConfiguration.getString("java.class.path");
     String applicationHome = pluginConfiguration.getString("app.home");
-    String templatesSourcesFolderPath = pluginConfiguration.getString(Constants.TEMPLATES_SOURCES_FOLDER);
+    String templatesSourcesFolderPath = pluginConfiguration.getString(Constants.TEMPLATES_JAVA_SOURCES_FOLDER);
+    String templatesResourcesFolderPath = pluginConfiguration.getString(Constants.TEMPLATES_RESOURCES_FOLDER);
     String templatesClassesFolderPath = pluginConfiguration.getString(Constants.TEMPLATES_CLASSES_FOLDER);
   }
 }

@@ -14,6 +14,10 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
+configurations {
+    includeBundle
+}
+
 repositories { mavenCentral() }
 
 dependencies {
@@ -37,6 +41,8 @@ dependencies {
 
     compile 'org.yaml:snakeyaml:1.17'
 
+    compile 'biz.aQute.bnd:bndlib:2.4.0'
+
     compile 'org.springframework:spring-core:4.2.5.RELEASE'
     compile 'org.springframework:spring-context:4.2.5.RELEASE'
     compile 'org.springframework:spring-beans:4.2.5.RELEASE'
@@ -53,7 +59,7 @@ dependencies {
 
     compile 'org.clapper:classutil_2.11:1.0.7'
 
-    compile 'org.apache.aries.blueprint:org.apache.aries.blueprint.core:1.6.0'
+    compile 'org.javassist:javassist:3.20.0-GA'
 
     testCompile "org.mockito:mockito-all:1.10.19"
     testCompile "org.springframework:spring-test:4.2.5.RELEASE"
@@ -64,9 +70,8 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Bundle Quickstart',     // Will be added to manifest
-                   'Import-Package': '*',  // Will be overwritten by the insturctions below
-                   "Class-Path": 'WEB-INF/classes'
+        attributes 'Implementation-Title': 'Bundle Quickstart',
+                   'Import-Package': '*'
     }
 }
 
@@ -77,26 +82,30 @@ bundle {
     exclude module: 'commons-io'
     exclude module: 'guava'
     exclude module: 'commons-lang3'
+    exclude module: 'commons-collections4'
 
     instructions << [
             'Bundle-Activator': 'ru.babaninnv.codegen.plugin.templator.TemplatorPluginActivator',
-            'Import-Package': 'org.osgi.framework,' +
+            'Import-Package': 'org.osgi.framework.*,' +
                               'org.apache.commons.logging.*,' +
                               'org.xml.sax,' +
                               'org.springframework.*,' +
                               'org.slf4j.*,' +
                               'org.yaml.*,' +
                               'org.apache.commons.io.*,' +
+                              'org.apache.commons.collections4.*,' +
                               'com.google.common.collect.*,' +
                               'org.apache.commons.lang3.*,' +
                               'javax.annotation.processing.*,' +
                               'javax.tools.*,' +
                               'javax.lang.model.*',
             '-sources': false
+            //'-wab': ''
     ]
 
-    instruction 'Export-Package', 'ru.babaninnv.codegen.plugin.templator.*,org.eclipse.jdt.*'
-    instruction '-wab', ''
+    instruction 'Export-Package', 'ru.babaninnv.codegen.plugin.templator.*,' +
+                                  'org.eclipse.jdt.*,' +
+                                  'javassist.*'
 }
 
 task copyJar(type: Copy, dependsOn: jar) {

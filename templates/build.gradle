@@ -1,4 +1,4 @@
-version 'unspecified'
+version '1.0.0-SNAPSHOT'
 
 apply plugin: 'groovy'
 apply plugin: 'java'
@@ -10,22 +10,7 @@ repositories {
 }
 
 dependencies {
-
     compile project(":plugins:codegen-templator-plugin")
-
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
-
     testCompile group: 'junit', name: 'junit', version: '4.11'
-}
-
-build {
-
-    def sep = File.separator;
-
-    delete "${project.buildDir.absolutePath}${sep}result-templates"
-
-    copy {
-        from "src/main/groovy", "src/main/java", "src/main/resources"
-        into "${project.buildDir.absolutePath}${sep}result-templates"
-    }
 }

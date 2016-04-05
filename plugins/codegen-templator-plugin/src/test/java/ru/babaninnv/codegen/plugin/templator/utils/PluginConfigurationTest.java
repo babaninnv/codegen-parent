@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
+import ru.babaninnv.codegen.plugin.templator.configurations.BundleContextConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.Assert.*;
 
 /**
  * Created by BabaninN on 31.03.2016.
  */
-@ContextConfiguration(classes = ru.babaninnv.codegen.plugin.templator.configurations.ContextConfiguration.class)
+@ContextConfiguration(classes = BundleContextConfiguration.class)
 public class PluginConfigurationTest extends AbstractTestNGSpringContextTests {
 
   private static final Logger LOG = LoggerFactory.getLogger(PluginConfigurationTest.class);
@@ -24,7 +24,7 @@ public class PluginConfigurationTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testLoadAndGet() throws Exception {
     pluginConfiguration.load();
-    String templatesSourcesFolder = pluginConfiguration.getString(Constants.TEMPLATES_SOURCES_FOLDER);
+    String templatesSourcesFolder = pluginConfiguration.getString(Constants.TEMPLATES_JAVA_SOURCES_FOLDER);
     LOG.info("templatesSourcesFolder: {}", templatesSourcesFolder);
     assertThat(templatesSourcesFolder).isNotEmpty();
 

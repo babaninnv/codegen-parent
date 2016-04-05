@@ -27,10 +27,10 @@ public class ExampleJavaTemplate implements Template {
 
   public void render() {
     try {
-      w.write("package ru.babaninnv.codegen.templates.java_example;");
-      w.write("class ExmapleTemplate { ");
-      w.write(" public void foo() { ");
-      w.write(" System.out.println(\"Hello Template\");");
+      w.write("package ru.babaninnv.codegen.templates.java_example;\n");
+      w.write("class ExmapleTemplate { \n");
+      w.write(" public void foo() { \n");
+      w.write(" System.out.println(\"Hello Template\");\n");
       w.write("}");
     } catch (Exception e) {
       e.printStackTrace();

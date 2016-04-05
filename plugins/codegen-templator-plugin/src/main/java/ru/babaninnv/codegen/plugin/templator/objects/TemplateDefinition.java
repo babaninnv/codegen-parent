@@ -6,38 +6,38 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import ru.babaninnv.codegen.plugin.templator.templates.Template;
 
+import java.io.ObjectStreamClass;
 import java.util.List;
 
 /**
  * Created by NikitaRed on 30.03.2016.
  */
 public class TemplateDefinition {
-  private String name;
-  private List<String> modules;
-  private List<String> classPaths;
-  private Template template;
 
-  public TemplateDefinition(Template template) {
-    this.template = template;
-    this.name = template.getName();
+  private String name;
+  private Template template;
+  private String className;
+
+  public TemplateDefinition(String name) {
+    this.name = name;
   }
 
   public String getName() {
-    return template.getName();
+    return name;
   }
 
-  public void setModules(List<String> modules) {
-    this.modules = modules;
+  public void setClassName(String className) {
+    this.className = className;
   }
-  public List<String> getModules() {
-    return modules;
+  public String getClassName() {
+    return className;
   }
 
-  public void setClassPaths(List<String> classPaths) {
-    this.classPaths = classPaths;
+  public Template getTemplate() {
+    return template;
   }
-  public List<String> getClassPaths() {
-    return classPaths;
+  public void setTemplate(Template template) {
+    this.template = template;
   }
 
   @Override
@@ -63,11 +63,6 @@ public class TemplateDefinition {
             .toHashCode();
   }
 
-  public Template getTemplate() {
-    return template;
-  }
 
-  public void setTemplate(Template template) {
-    this.template = template;
-  }
+
 }

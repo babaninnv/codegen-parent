@@ -1,0 +1,3 @@
+templates:
+  - "example-java-template":
+      classname: ru.babaninnv.codegen.templates.java_example.ExampleJavaTemplate
