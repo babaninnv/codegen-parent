@@ -31,10 +31,6 @@ public class ReloadCommandImplementationImpl implements CommandImplementation {
 
   @Override
   public void invoke() {
-    try {
-      templateClassUtils.compile();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    templateClassUtils.compile();
   }
 }

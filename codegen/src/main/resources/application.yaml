@@ -6,6 +6,8 @@ framework_systempackages_extra:
   - ru.babaninnv.codegen.plugins.service
   - ru.babaninnv.codegen.plugin.templator.commands
   - ru.babaninnv.codegen.plugin.templator.configurations
+  - org.codehaus.groovy.ant
+  - org.apache.tools.ant.taskdefs.MatchingTask
   # SPRING
   - org.springframework.beans.factory.annotation
   - org.springframework.beans.factory.config
@@ -26,6 +28,7 @@ framework_systempackages_extra:
   - org.apache.commons.collections4
   # GOOGLE
   - com.google.common.collect
+
 bundles_folder: c:/Users/BabaninN/IdeaProjects/codegen-parent/codegen/bundles
 bundles: 
   - org.apache.felix.gogo.runtime-0.16.2.jar

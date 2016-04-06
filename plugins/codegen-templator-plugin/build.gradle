@@ -35,7 +35,8 @@ dependencies {
     compile 'org.osgi:org.osgi.core:6.0.0'
     compile 'org.osgi:org.osgi.annotation:6.0.0'
 
-    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+    compile 'org.apache.ant:ant:1.9.6'
+    compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
     compile 'org.eclipse.jdt.core.compiler:ecj:4.5.1'
 
@@ -83,6 +84,7 @@ bundle {
     exclude module: 'guava'
     exclude module: 'commons-lang3'
     exclude module: 'commons-collections4'
+    exclude module: 'groovy-all'
 
     instructions << [
             'Bundle-Activator': 'ru.babaninnv.codegen.plugin.templator.TemplatorPluginActivator',
@@ -98,14 +100,17 @@ bundle {
                               'org.apache.commons.lang3.*,' +
                               'javax.annotation.processing.*,' +
                               'javax.tools.*,' +
-                              'javax.lang.model.*',
+                              'javax.lang.model.*,' +
+                              'org.codehaus.groovy.ant.*',
             '-sources': false
             //'-wab': ''
     ]
 
     instruction 'Export-Package', 'ru.babaninnv.codegen.plugin.templator.*,' +
                                   'org.eclipse.jdt.*,' +
-                                  'javassist.*'
+                                  'javassist.*,' +
+                                  'org.apache.tools.ant.*,' +
+                                  'org.apache.tools.ant.taskdefs.*'
 }
 
 task copyJar(type: Copy, dependsOn: jar) {

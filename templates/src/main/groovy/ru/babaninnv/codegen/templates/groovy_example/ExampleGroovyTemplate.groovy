@@ -6,10 +6,15 @@ import ru.babaninnv.codegen.plugin.templator.templates.Template
 /**
  * Created by BabaninN on 29.03.2016.
  */
-class ExampleGroovyTemplate implements Template {
+public class ExampleGroovyTemplate implements Template {
 
     private Writer w
     private Model model
+
+    @Override
+    String getName() {
+        return "ExampleGroovyTemplate"
+    }
 
     @Override
     void setup(Writer writer, Model model) {
