@@ -1,31 +1,35 @@
 package ru.babaninnv.codegen.plugin.templator.utils;
 
 import com.google.common.collect.ImmutableList;
+
 import groovy.lang.GroovyClassLoader;
-import groovy.util.AntBuilder;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.Path;
-import org.codehaus.groovy.ant.Groovyc;
-import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.tools.FileSystemCompiler;
+import org.codehaus.groovy.tools.Compiler;
 import org.eclipse.jdt.core.compiler.CompilationProgress;
 import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.babaninnv.codegen.plugin.templator.objects.TemplateDefinition;
-import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrar;
-import ru.babaninnv.codegen.plugin.templator.templates.Template;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.List;
+
+import ru.babaninnv.codegen.plugin.templator.objects.TemplateDefinition;
+import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrar;
+import ru.babaninnv.codegen.plugin.templator.templates.Template;
 
 /**
  * Created by BabaninN on 31.03.2016.
@@ -45,12 +49,16 @@ public class TemplateClassUtils {
   public void compile() {
 
     workspaceSettings = new WorkspaceSettings();
+    File outputFolder = new File(workspaceSettings.applicationHome, workspaceSettings.templatesClassesFolderPath);
 
     try {
-      //javaCompile();
+      if (outputFolder.exists()) FileUtils.forceDelete(outputFolder);
+      FileUtils.forceMkdir(outputFolder);
+
+      javaCompile();
       groovyCompile();
-      //copyResources();
-      //reloadClasses();
+      copyResources();
+      reloadClasses();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -58,13 +66,8 @@ public class TemplateClassUtils {
 
   private void javaCompile() throws IOException {
 
-    WorkspaceSettings workspaceSettings = new WorkspaceSettings();
-
     File javaSourceFolder = new File(workspaceSettings.applicationHome, workspaceSettings.templatesJavaSourcesFolderPath);
     File outputFolder = new File(workspaceSettings.applicationHome, workspaceSettings.templatesClassesFolderPath);
-
-    if (outputFolder.exists()) FileUtils.forceDelete(outputFolder);
-    FileUtils.forceMkdir(outputFolder);
 
     String currentJarLocation = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile()).toString().replaceAll("c:", "C:");
 
@@ -88,35 +91,29 @@ public class TemplateClassUtils {
 
   private void groovyCompile() throws IOException {
 
-    WorkspaceSettings workspaceSettings = new WorkspaceSettings();
-
     File groovySourceFolder = new File(workspaceSettings.applicationHome, workspaceSettings.templatesGroovySourcesFolderPath);
     File outputFolder = new File(workspaceSettings.applicationHome, workspaceSettings.templatesClassesFolderPath);
-
-    if (outputFolder.exists()) FileUtils.forceDelete(outputFolder);
-    FileUtils.forceMkdir(outputFolder);
 
     String currentJarLocation = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile()).toString().replaceAll("c:", "C:");
 
     CompilerConfiguration configuration = new CompilerConfiguration();
     configuration.setClasspath(workspaceSettings.inheritedClasspath.concat(";").concat(currentJarLocation));
+    configuration.setTargetDirectory(outputFolder);
 
-    CompilationUnit compilationUnit = new CompilationUnit();
+    final List<File> files = new ArrayList<>();
 
-    FileSystemCompiler.doCompilation(configuration, compilationUnit, );
-
-    /*
-    Project project = new Project();
-    Path classpath = new Path(project, workspaceSettings.inheritedClasspath.concat(";").concat(currentJarLocation));
-    Path sourceFolder = new Path(project, groovySourceFolder.getAbsolutePath());
-
-    Groovyc groovyc = new Groovyc();
-    groovyc.setProject(project);
-    groovyc.setSrcdir(sourceFolder);
-    groovyc.setClasspath(classpath);
-    groovyc.setDestdir(outputFolder);
-    groovyc.execute();
-    */
+    Files.walkFileTree(groovySourceFolder.toPath(), new SimpleFileVisitor<Path>() {
+      @Override
+      public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+        File file = path.toFile();
+        if (file.getName().endsWith(".groovy")) {
+          files.add(file);
+        }
+        return FileVisitResult.CONTINUE;
+      }
+    });
+    Compiler compiler = new Compiler(configuration);
+    compiler.compile(files.toArray(new File[files.size()]));
   }
 
   private void copyResources() throws IOException {
@@ -125,7 +122,7 @@ public class TemplateClassUtils {
     FileUtils.copyDirectory(resourcesFolder, outputFolder);
   }
 
-  private void reloadClasses() throws MalformedURLException {
+  private void reloadClasses() throws MalformedURLException, ClassNotFoundException {
     File templatesClassesFolder = new File(workspaceSettings.applicationHome, workspaceSettings.templatesClassesFolderPath);
     TemplateClassLoader classLoader = new TemplateClassLoader(new URL[]{templatesClassesFolder.toURI().toURL()}, this.getClass().getClassLoader());
 
@@ -134,8 +131,15 @@ public class TemplateClassUtils {
       try {
         Class<?> clazz = classLoader.loadClass(templateDefinition.getClassName());
         templateDefinition.setTemplate((Template) clazz.newInstance());
-      } catch (Exception e) {
-        e.printStackTrace();
+      } catch (Throwable e) {
+        try {
+          GroovyClassLoader groovyClassLoader = new GroovyClassLoader(classLoader);
+          templateDefinition.setTemplate((Template) groovyClassLoader.loadClass(templateDefinition.getClassName(), true, false).newInstance());
+        } catch (InstantiationException e1) {
+          e1.printStackTrace();
+        } catch (IllegalAccessException e1) {
+          e1.printStackTrace();
+        }
       }
     }
   }

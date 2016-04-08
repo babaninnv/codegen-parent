@@ -28,9 +28,6 @@ public class TemplateClassUtilsTest extends AbstractTestNGSpringContextTests {
   private TemplateClassUtils templateClassUtils;
 
   @Autowired
-  private PluginConfiguration pluginConfiguration;
-
-  @Autowired
   private TemplateRegistrar templateRegistrar;
 
   @Test
@@ -38,16 +35,13 @@ public class TemplateClassUtilsTest extends AbstractTestNGSpringContextTests {
 
     templateRegistrar.loadTemplatesConfiguration();
     templateClassUtils.compile();
-    /*
+
     TemplateDefinition exampleJavaTemplate = templateRegistrar.getByName("example-java-template");
     assertThat(exampleJavaTemplate).isNotNull();
 
-    TemplateClassLoader classLoader = pluginConfiguration.getCurrentTemplateClassLoader();
-    Class<?> templateClass = classLoader.loadClass("ru.babaninnv.codegen.templates.java_example.ExampleJavaTemplate");
-    Object template = templateClass.newInstance();
+    Template template = exampleJavaTemplate.getTemplate();
 
     assertThat(template).isNotNull();
-    assertThat(template).isInstanceOfAny(Template.class);
-    */
+
   }
 }

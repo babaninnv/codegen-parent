@@ -13,6 +13,7 @@ import ru.babaninnv.codegen.plugin.templator.utils.TemplateYamlConstants;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -75,27 +76,34 @@ public class TemplateRegistrarImpl implements TemplateRegistrar {
 
   private void parseYaml(Path yamlFile) throws IOException {
     Yaml yaml = new Yaml();
-    Map<String, Object> load = (Map<String, Object>) yaml.load(Files.newInputStream(yamlFile));
+    InputStream inputStream = Files.newInputStream(yamlFile);
 
-    List<Object> templatesSource = (List<Object>) load.get(TemplateYamlConstants.TEMPLATES);
+    try {
+      Map<String, Object> load = (Map<String, Object>) yaml.load(inputStream);
 
-    if (templatesSource != null && !templatesSource.isEmpty()) {
+      List<Object> templatesSource = (List<Object>) load.get(TemplateYamlConstants.TEMPLATES);
 
-      if (templates == null) templates = new ArrayList<>();
-      templates.clear();
+      if (templatesSource != null && !templatesSource.isEmpty()) {
 
-      for (Object template : templatesSource) {
-        Map<String, Object> templateMap = (Map<String, Object>) template;
-        templateMap.forEach((name, o) -> {
-          Map<String, Object> props = (Map<String, Object>) o;
+        if (templates == null) templates = new ArrayList<>();
+        templates.clear();
 
-          TemplateDefinition templateDefinition = new TemplateDefinition(name);
-          templateDefinition.setClassName((String) props.get("classname"));
+        for (Object template : templatesSource) {
+          Map<String, Object> templateMap = (Map<String, Object>) template;
+          templateMap.forEach((name, o) -> {
+            Map<String, Object> props = (Map<String, Object>) o;
 
-          templates.add(templateDefinition);
-        });
+            TemplateDefinition templateDefinition = new TemplateDefinition(name);
+            templateDefinition.setClassName((String) props.get("classname"));
+
+            templates.add(templateDefinition);
+          });
+        }
       }
+    } finally {
+      inputStream.close();
     }
+
 
     assert templates != null;
   }

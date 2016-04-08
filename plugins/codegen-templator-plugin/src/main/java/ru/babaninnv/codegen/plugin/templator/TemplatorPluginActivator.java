@@ -22,8 +22,6 @@ public class TemplatorPluginActivator implements BundleActivator {
   public void start(BundleContext context) throws Exception {
     this.bundleContext = context;
 
-    Class.forName("org.apache.tools.ant.taskdefs.MatchingTask");
-
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BundleContextConfiguration.class);
 
     TemplateCommand templateCommand = applicationContext.getBean(TemplateCommand.class);

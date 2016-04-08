@@ -34,24 +34,7 @@ public class PluginConfiguration {
     this.properties.put("app.home", new File("").getAbsolutePath());
     LOG.debug("#load> Set app.home property: {}", this.properties.get("app.home"));
   }
-
-  public Object get(String name) {
-    return properties.get(name);
-  }
-
   public String getString(String name) {
     return (String) properties.get(name);
-  }
-
-  public List<String> getStringList(String name) {
-    return (List<String>) properties.get(name);
-  }
-
-  public void setCurrentTemplateClassLoader(TemplateClassLoader currentTemplateClassLoader) {
-    this.currentTemplateClassLoader = currentTemplateClassLoader;
-  }
-
-  public TemplateClassLoader getCurrentTemplateClassLoader() {
-    return currentTemplateClassLoader;
   }
 }
