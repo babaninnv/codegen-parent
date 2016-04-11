@@ -6,31 +6,162 @@ mainClassName = 'ru.babaninnv.codegen.Main'
 
 repositories { mavenCentral() }
 
+def sep = File.separator;
+
 dependencies {
 
-  compile 'org.slf4j:slf4j-api:1.7.19'
-  compile 'ch.qos.logback:logback-classic:1.1.6'
-  compile 'ch.qos.logback:logback-core:1.1.6'
-    
-  compile 'jline:jline:2.14.1'
+    compile 'org.slf4j:slf4j-api:1.7.19'
+    compile 'ch.qos.logback:logback-classic:1.1.6'
+    compile 'ch.qos.logback:logback-core:1.1.6'
 
-  compile 'org.apache.ivy:ivy:2.4.0'
-    
-  compile 'org.springframework:spring-core:4.2.5.RELEASE'
-  compile 'org.springframework:spring-context:4.2.5.RELEASE'
-  compile 'org.springframework:spring-test:4.2.5.RELEASE'
-  compile 'org.springframework:spring-beans:4.2.5.RELEASE'
+    compile 'jline:jline:2.14.1'
 
-  compile 'org.osgi:org.osgi.core:6.0.0'
-  compile 'org.osgi:org.osgi.annotation:6.0.0'
+    compile 'org.apache.ivy:ivy:2.4.0'
 
-  
-  compile 'org.apache.felix:org.osgi.core:1.4.0'
-  compile 'org.apache.felix:org.apache.felix.framework:5.4.0'
-  
-  compile 'org.codehaus.groovy:groovy-all:2.4.6'
-  compile 'com.squareup:javapoet:1.6.1'
-  compile 'com.beust:jcommander:1.48'
-  
-  testCompile 'org.testng:testng:6.9.10'
+    compile 'org.springframework:spring-core:4.2.5.RELEASE'
+    compile 'org.springframework:spring-context:4.2.5.RELEASE'
+    compile 'org.springframework:spring-test:4.2.5.RELEASE'
+    compile 'org.springframework:spring-beans:4.2.5.RELEASE'
+
+    compile 'org.osgi:org.osgi.core:6.0.0'
+    compile 'org.osgi:org.osgi.annotation:6.0.0'
+
+
+    compile 'org.apache.felix:org.osgi.core:1.4.0'
+    compile 'org.apache.felix:org.apache.felix.framework:5.4.0'
+
+    compile 'org.codehaus.groovy:groovy-all:2.4.6'
+    compile 'com.squareup:javapoet:1.6.1'
+    compile 'com.beust:jcommander:1.48'
+
+    testCompile 'org.testng:testng:6.9.10'
+}
+
+task createDocs {
+    def docs = file("$buildDir/docs")
+    outputs.dir docs
+    doLast {
+        docs.mkdirs()
+        new File(docs, "readme.txt").write("Read me!")
+    }
+}
+
+task createBundles {
+    def bundles = file("$buildDir/bundles")
+    outputs.dir bundles
+    doLast {
+        bundles.mkdirs()
+    }
+}
+
+
+task step0Clean()  {
+    description = "Clean project recursively"
+    def cleanTasks = getTasksByName("clean", true);
+    cleanTasks.each {
+        dependsOn it
+    }
+}
+
+task step1BuildPlugins() {
+    def foundTasks = getTasksByName("build", true)
+    foundTasks.each {
+        dependsOn it
+    }
+}
+task step2BuildMain() { description = "Build main application" }
+task step3MakeFolders(dependsOn: ["copyResources", "installCodegenDist"]) {
+    description = "Aggregate: bundles to bundle folder, " +
+                  "template examples to example folder, " +
+                  "configuration to conf folder"
+
+}
+
+task install(dependsOn: [step0Clean, step1BuildPlugins, step2BuildMain, step3MakeFolders])
+
+task createStartScripts(type: CreateStartScripts) {
+
+    outputDir = file("$buildDir/bin")
+    mainClassName = project(":codegen").mainClassName
+    applicationName = 'codegen'
+    classpath = files(file("$buildDir/lib").listFiles())
+}
+
+task copyResources(dependsOn: "createStartScripts") {
+/*
+    delete "$buildDir/conf",
+           "$buildDir/lib",
+           "$buildDir/bundles",
+           "$buildDir/templates"
+    */
+
+    outputs.dir file("$buildDir/bin")
+    outputs.dir file("$buildDir/conf")
+    outputs.dir file("$buildDir/lib")
+    outputs.dir file("$buildDir/bundles")
+    outputs.dir file("$buildDir/templates")
+
+    // COPY START SCRIPT
+
+
+
+    // COPY DEPENDENCIES
+
+    copy {
+        from project(":codegen").configurations.lib
+        into "$buildDir/lib"
+    }
+
+    // COPY BUNDLES
+
+    copy {
+        from project(":codegen").configurations.bundle
+        into "$buildDir/bundles"
+    }
+
+    project(":plugins").subprojects.each { proj ->
+        copy {
+            from "${proj.buildDir}/libs/${proj.name}.jar"
+            into "$buildDir/bundles"
+        }
+    }
+
+    // COPY MAIN APPLICATION
+
+    copy {
+        from "${project(":codegen").buildDir}/libs/${project(":codegen").name}.jar"
+        into "$buildDir/lib"
+    }
+
+    // COPY EXAMPLE TEMPLATES
+    def templateSources = files();
+    def templatesMainSourceSet = project(":templates").sourceSets.main;
+    templatesMainSourceSet.java.srcDirs.each { templateSources.from(it) }
+    templatesMainSourceSet.groovy.srcDirs.each { templateSources.from(it) }
+
+    copy {
+        from templateSources
+        into "$buildDir/templates"
+    }
+
+    // COPY CONFIGURATIONS
+
+    copy {
+        from "${project(":codegen").projectDir}${sep}conf",
+                templatesMainSourceSet.resources.srcDirs
+        into "$buildDir/conf"
+    }
+}
+
+distributions {
+    codegen {
+        baseName = 'codegen'
+        contents {
+            from("$buildDir/bin") { into "bin" }
+            from("$buildDir/conf") { into "conf" }
+            from("$buildDir/lib") { into "lib" }
+            from("$buildDir/bundles") { into "bundles" }
+            from("$buildDir/templates") { into "templates" }
+        }
+    }
 }

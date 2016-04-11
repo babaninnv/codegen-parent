@@ -109,3 +109,8 @@ task copyJar(type: Copy, dependsOn: jar) {
     from new File(project.buildDir, "libs${File.separator}${project.name}.jar")
     into new File(project(":codegen").projectDir, "bundles")
 }
+/*
+test {
+    useTestNG()
+}
+*/
