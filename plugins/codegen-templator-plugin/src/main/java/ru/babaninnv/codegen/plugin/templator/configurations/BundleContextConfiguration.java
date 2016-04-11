@@ -7,7 +7,6 @@ import ru.babaninnv.codegen.plugin.templator.commands.TemplateCommandImpl;
 import ru.babaninnv.codegen.plugin.templator.commands.implementation.CommandImplementation;
 import ru.babaninnv.codegen.plugin.templator.commands.implementation.ListCommandImplementationImpl;
 import ru.babaninnv.codegen.plugin.templator.commands.implementation.MakeCommandImplementationImpl;
-import ru.babaninnv.codegen.plugin.templator.commands.implementation.ReloadCommandImplementationImpl;
 import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrar;
 import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrarImpl;
 import ru.babaninnv.codegen.plugin.templator.utils.Constants;
@@ -46,7 +45,7 @@ public class BundleContextConfiguration {
 
   @Bean
   public TemplateCommand templateCommand() {
-    return new TemplateCommandImpl(templateRegistrar());
+    return new TemplateCommandImpl();
   }
 
   @Bean
@@ -57,11 +56,6 @@ public class BundleContextConfiguration {
   @Bean
   public CommandImplementation makeCommandImplementation() {
     return new MakeCommandImplementationImpl();
-  }
-
-  @Bean
-  public CommandImplementation reloadCommandImplementation() {
-    return new ReloadCommandImplementationImpl();
   }
 
   @Bean

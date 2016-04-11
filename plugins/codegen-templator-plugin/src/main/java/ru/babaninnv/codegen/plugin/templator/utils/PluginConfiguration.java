@@ -17,7 +17,6 @@ public class PluginConfiguration {
   private static final Logger LOG = LoggerFactory.getLogger(PluginConfiguration.class);
 
   private Map<String, Object> properties = new HashMap<>();
-  private TemplateClassLoader currentTemplateClassLoader;
 
   public void load() {
     Yaml yaml = new Yaml();
