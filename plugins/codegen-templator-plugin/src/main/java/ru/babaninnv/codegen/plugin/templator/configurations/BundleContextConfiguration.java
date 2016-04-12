@@ -26,7 +26,7 @@ public class BundleContextConfiguration {
 
     Map<String, Object> properties = new HashMap<>();
 
-    properties.put(Constants.TEMPLATES_CONFIG_FILENAME, "templates/src/main/resources/templates.yaml");
+    properties.put(Constants.TEMPLATES_CONFIG_FILENAME, "conf/templates.yaml");
     properties.put(Constants.TEMPLATES_JAVA_SOURCES_FOLDER, "templates/src/main/java");
     properties.put(Constants.TEMPLATES_GROOVY_SOURCES_FOLDER, "templates/src/main/groovy");
     properties.put(Constants.TEMPLATES_RESOURCES_FOLDER, "templates/src/main/resources");

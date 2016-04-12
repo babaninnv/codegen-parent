@@ -1,5 +1,10 @@
 apply plugin: 'application'
 
+startScripts.enabled = false
+installDist.enabled = false
+distTar.enabled = false
+distZip.enabled = false
+
 subprojects {
    repositories { mavenCentral() }
 }
@@ -51,14 +56,10 @@ task createStartScripts(type: CreateStartScripts) {
     outputDir = file("$buildDir/bin")
     mainClassName = project(":codegen").ext.mainClassName
     applicationName = 'codegen'
+    defaultJvmOpts = ["-Dconfiguration.path=../conf"]
     classpath = files(project(":codegen").configurations.lib,
                       "${project(":codegen").buildDir}/libs/${project(":codegen").name}.jar")
 }
-
-startScripts.enabled = false
-installDist.enabled = false
-distTar.enabled = false
-distZip.enabled = false
 
 distributions {
 
