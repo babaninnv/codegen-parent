@@ -1,0 +1,107 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.dm.gradle:gradle-bundle-plugin:0.8.2'
+    }
+}
+
+apply plugin: 'org.dm.bundle'
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories { mavenCentral() }
+
+dependencies {
+
+    compile 'org.slf4j:slf4j-api:1.7.19'
+    compile 'ch.qos.logback:logback-classic:1.1.6'
+    compile 'ch.qos.logback:logback-core:1.1.6'
+
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'org.apache.commons:commons-collections4:4.1'
+    compile 'commons-io:commons-io:2.4'
+
+    compile 'com.google.guava:guava:19.0'
+
+    compile 'org.osgi:org.osgi.core:6.0.0'
+    compile 'org.osgi:org.osgi.annotation:6.0.0'
+
+    compile 'org.codehaus.groovy:groovy:2.4.6'
+
+    compile 'org.eclipse.jdt.core.compiler:ecj:4.5.1'
+
+    compile 'org.yaml:snakeyaml:1.17'
+
+    compile 'biz.aQute.bnd:bndlib:2.4.0'
+
+    compile 'org.springframework:spring-core:4.2.5.RELEASE'
+    compile 'org.springframework:spring-context:4.2.5.RELEASE'
+    compile 'org.springframework:spring-beans:4.2.5.RELEASE'
+    compile 'org.springframework:spring-aop:4.2.5.RELEASE'
+    compile 'org.springframework:spring-expression:4.2.5.RELEASE'
+
+    compile 'org.apache.felix:org.apache.felix.framework:5.4.0'
+    compile 'org.apache.felix:org.apache.felix.utils:1.8.2'
+    compile 'org.apache.felix:org.apache.felix.dependencymanager:4.3.0'
+
+    compile 'org.apache.felix:org.apache.felix.gogo.runtime:0.16.2'
+    compile 'org.apache.felix:org.apache.felix.gogo.shell:0.12.0'
+    compile 'org.apache.felix:org.apache.felix.gogo.command:0.16.0'
+
+    compile 'org.clapper:classutil_2.11:1.0.7'
+
+    compile 'org.javassist:javassist:3.20.0-GA'
+
+    testCompile "org.mockito:mockito-all:1.10.19"
+    testCompile "org.springframework:spring-test:4.2.5.RELEASE"
+    testCompile 'org.apache.sling:org.apache.sling.testing.osgi-mock:2.0.2'
+    testCompile "org.testng:testng:6.9.10"
+    testCompile "org.assertj:assertj-core:3.3.0"
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Bundle Quickstart',
+                   'Import-Package': '*'
+    }
+}
+
+bundle {
+
+    exclude module: "commons-io"
+
+    instructions << [
+            'Bundle-Activator': 'ru.babaninnv.codegen.plugin.templator.TemplatorPluginActivator',
+            'Import-Package': 'org.osgi.framework.*,' +
+                              'org.apache.commons.logging.*,' +
+                              'org.xml.sax,' +
+                              'org.springframework.*,' +
+                              'org.slf4j.*,' +
+                              'org.yaml.*,' +
+                              'org.apache.commons.io.*,' +
+                              'org.apache.commons.collections4.*,' +
+                              'com.google.common.collect.*,' +
+                              'org.apache.commons.lang3.*,' +
+                              'javax.annotation.processing.*,' +
+                              'javax.tools.*,' +
+                              'javax.lang.model.*,' +
+                              'org.codehaus.groovy.*,' +
+                              'groovy.lang.*'
+            //'-wab': ''
+    ]
+
+    instruction 'Export-Package', 'ru.babaninnv.codegen.plugin.templator.*,' +
+                                  'org.eclipse.jdt.*,' +
+                                  'javassist.*,' +
+                                  'org.codehaus.groovy.*'
+}
+
+task copyJar(type: Copy, dependsOn: jar) {
+    from new File(project.buildDir, "libs${File.separator}${project.name}.jar")
+    into new File(project(":codegen").projectDir, "bundles")
+}

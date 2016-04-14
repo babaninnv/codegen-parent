@@ -1,36 +1,102 @@
 apply plugin: 'application'
-apply plugin: 'groovy'
-apply plugin: 'java'
 
-mainClassName = 'ru.babaninnv.codegen.Main'
+startScripts.enabled = false
+installDist.enabled = false
+distTar.enabled = false
+distZip.enabled = false
 
-repositories { mavenCentral() }
+subprojects {
+   repositories { mavenCentral() }
+}
 
-dependencies {
+def sep = File.separator;
 
-  compile 'org.slf4j:slf4j-api:1.7.19'
-  compile 'ch.qos.logback:logback-classic:1.1.6'
-  compile 'ch.qos.logback:logback-core:1.1.6'
-    
-  compile 'jline:jline:2.14.1'
+task createBundles {
+    def bundles = file("$buildDir/bundles")
+    outputs.dir bundles
+    doLast {
+        bundles.mkdirs()
+    }
+}
 
-  compile 'org.apache.ivy:ivy:2.4.0'
-    
-  compile 'org.springframework:spring-core:4.2.5.RELEASE'
-  compile 'org.springframework:spring-context:4.2.5.RELEASE'
-  compile 'org.springframework:spring-test:4.2.5.RELEASE'
-  compile 'org.springframework:spring-beans:4.2.5.RELEASE'
+task install(dependsOn: ["step_0_Clean", "step_1_BuildPlugins", "step_2_MakeFolders"])
 
-  compile 'org.osgi:org.osgi.core:6.0.0'
-  compile 'org.osgi:org.osgi.annotation:6.0.0'
+// -------------------------------
+//
+//           STEPS
+//
+// -------------------------------
 
-  
-  compile 'org.apache.felix:org.osgi.core:1.4.0'
-  compile 'org.apache.felix:org.apache.felix.framework:5.4.0'
-  
-  compile 'org.codehaus.groovy:groovy-all:2.4.6'
-  compile 'com.squareup:javapoet:1.6.1'
-  compile 'com.beust:jcommander:1.48'
-  
-  testCompile 'org.testng:testng:6.9.10'
+
+task step_0_Clean()  {
+    def cleanTasks = getTasksByName("clean", true);
+    cleanTasks.each {
+        dependsOn it
+    }
+}
+
+task step_1_BuildPlugins() {
+    subprojects.each {
+        def foundTasks = it.getTasksByName("build", true)
+        foundTasks.each {
+            dependsOn it
+        }
+    }
+}
+
+task step_2_MakeFolders(dependsOn: ["createStartScripts", "installCodegenDist"])
+
+// -------------------------------
+//
+//           OTHER
+//
+// -------------------------------
+
+task createStartScripts(type: CreateStartScripts) {
+    outputDir = file("$buildDir/bin")
+    mainClassName = project(":codegen").ext.mainClassName
+    applicationName = 'codegen'
+    defaultJvmOpts = ["-Dconfiguration.path=../conf"]
+    classpath = files(project(":codegen").configurations.lib,
+                      "${project(":codegen").buildDir}/libs/${project(":codegen").name}.jar")
+}
+
+distributions {
+
+    codegen {
+        baseName = 'codegen'
+        contents {
+
+            // DEFINE
+            def templateSources = files();
+            def templatesMainSourceSet = project(":templates").sourceSets.main;
+            templatesMainSourceSet.java.srcDirs.each { templateSources.from(it) }
+            templatesMainSourceSet.groovy.srcDirs.each { templateSources.from(it) }
+
+            def plugins = files();
+            project(":plugins").subprojects.each {
+                plugins.from("${it.buildDir}/libs/${it.name}.jar")
+            }
+
+            // COPYSPEC
+            from("$buildDir/bin") {
+                into "bin"
+            }
+            from(["${project(":codegen").projectDir}${sep}conf",
+                  templatesMainSourceSet.resources.srcDirs]) {
+                into "conf"
+            }
+
+            from([project(":codegen").configurations.lib,
+                  "${project(":codegen").buildDir}/libs/${project(":codegen").name}.jar"]) {
+                into "lib"
+            }
+            from([project(":codegen").configurations.bundle, plugins]) {
+                into "bundles"
+            }
+            from(templateSources) {
+                into "templates"
+            }
+        }
+    }
 }

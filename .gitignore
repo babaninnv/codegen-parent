@@ -1,5 +1,22 @@
+<<<<<<< HEAD
 /bin/
 /build/
 .classpath
 .project
 /.settings
+=======
+**/.idea
+
+**/build/
+**/bin/
+**/bundles/
+
+/.gradle
+/.settings
+
+**/felix-cache/
+.gradle
+.settings
+.classpath
+.project
+>>>>>>> branch 'master' of git@github.com:babaninnv/codegen-parent.git

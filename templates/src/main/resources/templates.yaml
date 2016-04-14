@@ -1,0 +1,5 @@
+templates:
+  - "example-java-template":
+      classname: ru.babaninnv.codegen.templates.java_example.ExampleJavaTemplate
+  - "example-groovy-template":
+      classname: ru.babaninnv.codegen.templates.groovy_example.ExampleGroovyTemplate
