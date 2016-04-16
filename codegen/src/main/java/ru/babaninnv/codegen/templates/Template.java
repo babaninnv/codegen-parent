@@ -1,4 +1,4 @@
-package ru.babaninnv.codegen.api.templates;
+package ru.babaninnv.codegen.templates;
 
 import java.io.Writer;
 

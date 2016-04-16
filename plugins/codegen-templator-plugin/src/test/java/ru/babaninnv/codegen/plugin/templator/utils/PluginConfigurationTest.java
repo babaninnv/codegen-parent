@@ -23,6 +23,7 @@ public class PluginConfigurationTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testLoadAndGet() throws Exception {
+    pluginConfiguration.load();
     String templatesSourcesFolder = pluginConfiguration.getString(Constants.TEMPLATES_JAVA_SOURCES_FOLDER);
     LOG.info("templatesSourcesFolder: {}", templatesSourcesFolder);
     assertThat(templatesSourcesFolder).isNotEmpty();

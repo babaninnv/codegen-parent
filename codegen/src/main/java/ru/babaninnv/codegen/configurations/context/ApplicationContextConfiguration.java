@@ -3,7 +3,7 @@ package ru.babaninnv.codegen.configurations.context;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import ru.babaninnv.codegen.api.Console;
+import ru.babaninnv.codegen.Console;
 import ru.babaninnv.codegen.ConsoleDefault;
 import ru.babaninnv.codegen.configurations.ApplicationConfiguration;
 import ru.babaninnv.codegen.utils.FelixFrameworkUtils;

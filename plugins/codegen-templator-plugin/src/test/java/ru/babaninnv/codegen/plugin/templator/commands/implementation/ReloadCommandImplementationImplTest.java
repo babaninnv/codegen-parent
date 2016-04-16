@@ -8,19 +8,20 @@ import ru.babaninnv.codegen.plugin.templator.configurations.BundleContextConfigu
 import ru.babaninnv.codegen.plugin.templator.configurations.BundleContextConfigurationTest;
 import ru.babaninnv.codegen.plugin.templator.services.TemplateRegistrar;
 
-import static org.mockito.Mockito.mock;
-
 /**
- * Created by BabaninN on 30.03.2016.
+ * Created by BabaninN on 04.04.2016.
  */
 @ContextConfiguration(classes = BundleContextConfiguration.class)
-public class ListCommandImplementationTest extends AbstractTestNGSpringContextTests {
+public class ReloadCommandImplementationImplTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
-  private CommandImplementation listCommandImplementation;
+  private TemplateRegistrar templateRegistrar;
+
+  @Autowired
+  private CommandImplementation reloadCommandImplementation;
 
   @Test
   public void testInvoke() throws Exception {
-    listCommandImplementation.invoke();
+    reloadCommandImplementation.invoke();
   }
 }
