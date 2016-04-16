@@ -1,13 +1,6 @@
-apply plugin: 'application'
-
 subprojects {
    repositories { mavenCentral() }
 }
-
-startScripts.enabled = false
-installDist.enabled = false
-distTar.enabled = false
-distZip.enabled = false
 
 def sep = File.separator;
 
@@ -19,7 +12,43 @@ task createBundles {
     }
 }
 
-task install(dependsOn: ["step_0_Clean", "step_1_BuildPlugins", "step_2_MakeFolders"])
+task install(dependsOn: ["step_0_Clean", "step_1_BuildPlugins"]) << {
+
+    def libs = project(":codegen").configurations.lib
+    def installProjectFolderPath = "$buildDir/install/codegen"
+    def templatesProjectFolderPath = project(":templates").projectDir
+
+    def plugins = files();
+    project(":plugins").subprojects.each {
+        plugins.from("${it.buildDir}/libs/")
+    }
+
+    copy {
+        from "scripts/"
+        into "$installProjectFolderPath/bin"
+    }
+
+    copy {
+        from "conf/"
+        into "$installProjectFolderPath/conf"
+    }
+
+    copy {
+        from libs, "${project(":codegen").buildDir}/libs/"
+        into "$installProjectFolderPath/lib"
+    }
+
+    copy {
+        from project(":codegen").configurations.bundle, plugins
+        into "$installProjectFolderPath/bundles"
+    }
+
+    copy {
+        from new File(templatesProjectFolderPath, "src")
+        into "$installProjectFolderPath/templates/src"
+    }
+
+}
 
 // -------------------------------
 //
@@ -40,63 +69,6 @@ task step_1_BuildPlugins() {
         def foundTasks = it.getTasksByName("build", true)
         foundTasks.each {
             dependsOn it
-        }
-    }
-}
-
-task step_2_MakeFolders(dependsOn: ["createStartScripts", "installCodegenDist"])
-
-// -------------------------------
-//
-//           OTHER
-//
-// -------------------------------
-
-task createStartScripts(type: CreateStartScripts) {
-    outputDir = file("$buildDir/bin")
-    mainClassName = project(":codegen").ext.mainClassName
-    applicationName = 'codegen'
-    defaultJvmOpts = ["-Dconfiguration.path=../conf"]
-    classpath = files(project(":codegen").configurations.lib,
-                      "${project(":codegen").buildDir}/libs/")
-}
-
-distributions {
-
-    codegen {
-        baseName = 'codegen'
-        contents {
-
-            // DEFINE
-            def templateSources = files();
-            def templatesMainSourceSet = project(":templates").sourceSets.main;
-            templatesMainSourceSet.java.srcDirs.each { templateSources.from(it) }
-            templatesMainSourceSet.groovy.srcDirs.each { templateSources.from(it) }
-
-            def plugins = files();
-            project(":plugins").subprojects.each {
-                plugins.from("${it.buildDir}/libs/${it.name}.jar")
-            }
-
-            // COPYSPEC
-            from("$buildDir/bin") {
-                into "bin"
-            }
-            from(["${project(":codegen").projectDir}${sep}conf",
-                  templatesMainSourceSet.resources.srcDirs]) {
-                into "conf"
-            }
-
-            from([project(":codegen").configurations.lib,
-                  "${project(":codegen").buildDir}/libs/${project(":codegen").name}.jar"]) {
-                into "lib"
-            }
-            from([project(":codegen").configurations.bundle, plugins]) {
-                into "bundles"
-            }
-            from(templateSources) {
-                into "templates"
-            }
         }
     }
 }
