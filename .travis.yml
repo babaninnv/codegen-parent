@@ -1,2 +1,5 @@
 language: java
-install: gradle build
+install: gradle test
+jdk:
+  - oraclejdk8
+  - openjdk8

@@ -1,8 +1,8 @@
-codegen
-=======
 ## CODEGEN
 
 **codegeneration tools**
+
+[![Build Status](https://travis-ci.org/babaninnv/codegen-parent.svg?branch=master)](https://travis-ci.org/babaninnv/codegen-parent)
 
 #### Simple codegeneration tools. Template may to write with java(ex. javapoet or out.write(...) or groovy)
 
