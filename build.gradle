@@ -1,4 +1,5 @@
 apply plugin: 'application'
+apply plugin: 'distribution'
 
 subprojects {
    repositories { mavenCentral() }
@@ -15,10 +16,10 @@ task createBundles {
 }
 
 build {
-  startScripts.enabled = false
-  installDist.enabled = false
-  distTar.enabled = false
-  distZip.enabled = false
+  //startScripts.enabled = false
+  //installDist.enabled = false
+  //distTar.enabled = false
+  //distZip.enabled = false
 
 }
 
