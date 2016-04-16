@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+/bin/
+/build/
+.classpath
+.project
+/.settings
+=======
 **/.idea
 
 **/build/
@@ -12,3 +19,4 @@
 .settings
 .classpath
 .project
+>>>>>>> branch 'master' of git@github.com:babaninnv/codegen-parent.git
