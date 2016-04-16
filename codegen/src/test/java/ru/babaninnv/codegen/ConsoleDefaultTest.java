@@ -9,7 +9,6 @@ import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 import org.testng.annotations.Test;
 
-import ru.babaninnv.codegen.api.Console;
 import ru.babaninnv.codegen.configurations.ApplicationConfiguration;
 import ru.babaninnv.codegen.utils.FelixFrameworkUtils;
 import ru.babaninnv.codegen.utils.PropertyConstants;

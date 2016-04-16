@@ -1,11 +1,10 @@
 package ru.babaninnv.codegen;
 
+import java.io.File;
+
 import org.apache.commons.io.FileUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.io.File;
-
-import ru.babaninnv.codegen.api.Console;
 import ru.babaninnv.codegen.configurations.context.ApplicationContextConfiguration;
 
 public class Main {

@@ -1,6 +1,5 @@
 package ru.babaninnv.codegen.plugin.templator.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -19,16 +18,20 @@ public class PluginConfiguration {
 
   private Map<String, Object> properties = new HashMap<>();
 
+  public void load() {
+    Yaml yaml = new Yaml();
+    properties = (Map<String, Object>) yaml.load(PluginConfiguration.class.getClassLoader().getResourceAsStream(Constants.PLUGIN_PROPERTIES_FILE));
+    properties.put("java.class.path", System.getProperty("java.class.path"));
+    properties.put("app.home", new File("").getAbsolutePath());
+    LOG.debug("#load> Set app.home property: {}", properties.get("app.home"));
+  }
+
   public void load(Map<String, Object> properties) {
-
-    String appHome = StringUtils.defaultString(System.getProperty("app.home"));
-
     this.properties = new HashMap<>();
     this.properties.putAll(properties);
     this.properties.put("java.class.path", System.getProperty("java.class.path"));
-    this.properties.put("app.home", new File(appHome).getAbsolutePath());
-
-    LOG.debug("properties: {}", properties.toString());
+    this.properties.put("app.home", new File("../").getAbsolutePath());
+    LOG.debug("#load> Set app.home property: {}", this.properties.get("app.home"));
   }
   public String getString(String name) {
     return (String) properties.get(name);
