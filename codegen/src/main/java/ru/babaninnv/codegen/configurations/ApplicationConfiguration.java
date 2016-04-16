@@ -27,10 +27,14 @@ public class ApplicationConfiguration {
 
   public void load() {
     String configurationPath = System.getProperty(PropertyConstants.CONFIGURATION_PATH);
-    File configurationFile = new File(configurationPath, PropertyConstants.APPLICATION_YAML_FILE);
+    
+    File configurationFile = null;
     FileInputStream fileInputStream = null;
     Closer closer = Closer.create();
+    
     try {
+      configurationFile = new File(configurationPath, PropertyConstants.APPLICATION_YAML_FILE);
+      
       fileInputStream = new FileInputStream(configurationFile);
       closer.register(fileInputStream);
       Yaml yaml = new Yaml();
