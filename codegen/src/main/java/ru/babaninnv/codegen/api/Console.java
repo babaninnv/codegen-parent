@@ -1,4 +1,4 @@
-package ru.babaninnv.codegen;
+package ru.babaninnv.codegen.api;
 
 import ru.babaninnv.codegen.configurations.ApplicationConfiguration;
 import ru.babaninnv.codegen.utils.FelixFrameworkUtils;

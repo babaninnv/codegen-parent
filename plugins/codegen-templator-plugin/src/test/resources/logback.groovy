@@ -9,5 +9,6 @@ appender("CONSOLE", ConsoleAppender) {
     }
 }
 
+// logger("com.javacodegeeks.examples.logbackexample.beans", INFO)
 
 root(DEBUG, ['CONSOLE'])

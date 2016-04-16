@@ -1,4 +1,4 @@
-package ru.babaninnv.codegen.plugin.templator.templates;
+package ru.babaninnv.codegen.api.templates;
 
 import java.util.Map;
 

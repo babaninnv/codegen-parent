@@ -64,7 +64,6 @@ dependencies {
     testCompile "org.assertj:assertj-core:3.3.0"
 }
 
-<<<<<<< HEAD
 build {
     doLast {
         copy {
@@ -74,8 +73,6 @@ build {
     }
 }
 
-=======
->>>>>>> branch 'master' of git@repo.babaninfv.ru:nikitared/codegen-parent.git
 jar {
     manifest {
         attributes 'Implementation-Title': 'Bundle Quickstart',
@@ -111,9 +108,4 @@ bundle {
                                   'org.eclipse.jdt.*,' +
                                   'javassist.*,' +
                                   'org.codehaus.groovy.*'
-}
-
-task copyJar(type: Copy, dependsOn: jar) {
-    from new File(project.buildDir, "libs${File.separator}${project.name}.jar")
-    into new File(project(":codegen").projectDir, "bundles")
 }
