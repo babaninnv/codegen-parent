@@ -70,7 +70,7 @@ build {
     doLast {
         copy {
             from new File(project.buildDir, "libs${File.separator}")
-            into new File(project(":codegen").projectDir, "bundles")
+            into new File(rootProject.projectDir, "bundles")
         }
     }
 }

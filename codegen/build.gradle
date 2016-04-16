@@ -74,3 +74,12 @@ test {
         logger.lifecycle("Running test: " + descriptor)
     }
 }
+
+build {
+  doLast {
+    copy {
+      from configurations.bundle
+      into "${rootProject.projectDir.absolutePath}/bundles"
+    }
+  }
+}

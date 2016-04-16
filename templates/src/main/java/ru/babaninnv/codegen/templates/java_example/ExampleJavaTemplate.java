@@ -15,11 +15,6 @@ public class ExampleJavaTemplate implements Template {
   @SuppressWarnings("unused")
   private Model model;
 
-  @Override
-  public String getName() {
-    return "ExampleJavaTemplate";
-  }
-
   public void setup(Writer writer, Model model) {
     this.model = model;
     this.w = writer;

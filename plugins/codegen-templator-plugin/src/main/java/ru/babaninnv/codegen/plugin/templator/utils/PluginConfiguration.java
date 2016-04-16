@@ -28,7 +28,7 @@ public class PluginConfiguration {
     this.properties.put("java.class.path", System.getProperty("java.class.path"));
     this.properties.put("app.home", new File(appHome).getAbsolutePath());
 
-    LOG.debug("properties: {}", properties.toString());
+    LOG.debug("properties: {}", this.properties.toString());
   }
   public String getString(String name) {
     return (String) properties.get(name);

@@ -12,11 +12,6 @@ public class ExampleGroovyTemplate implements Template {
     private Model model
 
     @Override
-    String getName() {
-        return "ExampleGroovyTemplate"
-    }
-
-    @Override
     void setup(Writer writer, Model model) {
         this.model = model
         this.w = writer
@@ -28,7 +23,7 @@ public class ExampleGroovyTemplate implements Template {
 class ExmapleTemplate {
 
     def foo() {
-        System.out.println("Hello Template");
+        System.out.println("Hello Template!");
     }
 
 }

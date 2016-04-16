@@ -8,6 +8,7 @@ framework_systempackages_extra:
   - ru.babaninnv.codegen.plugin.templator.configurations
   - groovy.lang;version="2.6"
 
+  # GROOVY
   - org.codehaus.groovy;version="2.6"
   - org.codehaus.groovy.control;version="2.6"
   - org.codehaus.groovy.tools;version="2.6"
@@ -35,6 +36,7 @@ framework_systempackages_extra:
   # YAML
   - org.yaml;version="1.17"
   - org.yaml.snakeyaml;version="1.17"
+  
   # APACHE COMMONS
   - org.apache.commons.io;version="2.4"
   - org.apache.commons.lang3;version="3.4"
