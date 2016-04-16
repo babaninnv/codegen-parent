@@ -12,6 +12,9 @@ public class Main {
 
   private static final String PROPERTIES_FILE = "conf/application.yaml";
 
+  /**
+   * For local run: -Dconfiguration.path=conf -Dapp.home=.
+   * */
   public static void main(String[] argv) throws Exception {
     FileUtils.deleteDirectory(new File("felix-cache"));
     new Main().run();

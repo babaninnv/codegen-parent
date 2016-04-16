@@ -4,6 +4,11 @@ subprojects {
    repositories { mavenCentral() }
 }
 
+startScripts.enabled = false
+installDist.enabled = false
+distTar.enabled = false
+distZip.enabled = false
+
 def sep = File.separator;
 
 task createBundles {
@@ -13,15 +18,6 @@ task createBundles {
         bundles.mkdirs()
     }
 }
-
-build {
-  //startScripts.enabled = false
-  //installDist.enabled = false
-  //distTar.enabled = false
-  //distZip.enabled = false
-
-}
-
 
 task install(dependsOn: ["step_0_Clean", "step_1_BuildPlugins", "step_2_MakeFolders"])
 
@@ -62,7 +58,7 @@ task createStartScripts(type: CreateStartScripts) {
     applicationName = 'codegen'
     defaultJvmOpts = ["-Dconfiguration.path=../conf"]
     classpath = files(project(":codegen").configurations.lib,
-                      "${project(":codegen").buildDir}/libs/${project(":codegen").name}.jar")
+                      "${project(":codegen").buildDir}/libs/")
 }
 
 distributions {
