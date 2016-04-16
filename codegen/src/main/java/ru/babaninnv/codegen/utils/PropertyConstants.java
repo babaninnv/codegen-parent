@@ -8,6 +8,7 @@ public class PropertyConstants {
   // SYSTEM
 
   public static final String CONFIGURATION_PATH = "configuration.path";
+  public static final String APP_HOME = "app.home";
   public static final String APPLICATION_YAML_FILE = "application.yaml";
 
   // APPLICATION

@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.Hashtable;
 import java.util.List;
 
+import ru.babaninnv.codegen.api.Console;
 import ru.babaninnv.codegen.configurations.ApplicationConfiguration;
 import ru.babaninnv.codegen.utils.FelixFrameworkUtils;
 import ru.babaninnv.codegen.utils.PropertyConstants;

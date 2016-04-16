@@ -14,6 +14,8 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
+version = "1.0.0-SNAPSHOT"
+
 repositories { mavenCentral() }
 
 dependencies {
@@ -64,6 +66,15 @@ dependencies {
     testCompile "org.assertj:assertj-core:3.3.0"
 }
 
+build {
+    doLast {
+        copy {
+            from new File(project.buildDir, "libs${File.separator}")
+            into new File(project(":codegen").projectDir, "bundles")
+        }
+    }
+}
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'Bundle Quickstart',
@@ -101,7 +112,6 @@ bundle {
                                   'org.codehaus.groovy.*'
 }
 
-task copyJar(type: Copy, dependsOn: jar) {
-    from new File(project.buildDir, "libs${File.separator}${project.name}.jar")
-    into new File(project(":codegen").projectDir, "bundles")
+test {
+    useTestNG()
 }

@@ -56,7 +56,7 @@ task createStartScripts(type: CreateStartScripts) {
     outputDir = file("$buildDir/bin")
     mainClassName = project(":codegen").ext.mainClassName
     applicationName = 'codegen'
-    defaultJvmOpts = ["-Dconfiguration.path=../conf"]
+    defaultJvmOpts = ["-Dconfiguration.path=../conf", "-Dapp.home=../"]
     classpath = files(project(":codegen").configurations.lib,
                       "${project(":codegen").buildDir}/libs/${project(":codegen").name}.jar")
 }

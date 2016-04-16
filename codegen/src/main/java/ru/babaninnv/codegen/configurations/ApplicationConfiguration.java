@@ -2,6 +2,20 @@ package ru.babaninnv.codegen.configurations;
 
 import com.google.common.io.Closer;
 
+import org.apache.commons.el.ExpressionEvaluatorImpl;
+import org.apache.commons.el.VariableResolverImpl;
+import org.apache.commons.el.parser.ELParser;
+import org.apache.commons.el.parser.ELParserTokenManager;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.jexl3.JexlBuilder;
+import org.apache.commons.jexl3.JexlContext;
+import org.apache.commons.jexl3.JexlEngine;
+import org.apache.commons.jexl3.JexlExpression;
+import org.apache.commons.jexl3.JexlScript;
+import org.apache.commons.jexl3.JxltEngine;
+import org.apache.commons.jexl3.MapContext;
+import org.apache.commons.jexl3.internal.Engine;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -34,10 +48,20 @@ public class ApplicationConfiguration {
       fileInputStream = new FileInputStream(configurationFile);
       closer.register(fileInputStream);
       Yaml yaml = new Yaml();
-      Map<String, Object> load = (Map<String, Object>) yaml.load(fileInputStream);
-      properties.putAll(load);
 
-    } catch (FileNotFoundException e) {
+      String configString = IOUtils.toString(fileInputStream);
+
+      JexlContext context = new MapContext();
+      context.set("APP_HOME", System.getProperty(PropertyConstants.APP_HOME));
+      JxltEngine engine = new JexlBuilder().create().createJxltEngine();
+      JxltEngine.Expression expr = engine.createExpression(configString);
+
+      Map<String, Object> load = (Map<String, Object>) yaml.load(expr.evaluate(context).toString());
+      properties.putAll(load);
+      properties.put(PropertyConstants.APP_HOME, StringUtils.defaultString(System.getProperty(PropertyConstants.APP_HOME), ""));
+      LOG.info("APP_HOME={}", System.getProperty(PropertyConstants.APP_HOME));
+
+    } catch (Exception e) {
       LOG.error(e.getMessage().concat(". File: ").concat(configurationFile.getAbsolutePath()), e);
     } finally {
       try {
